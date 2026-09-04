@@ -1,9 +1,3 @@
-हो 👍 आता समजलो. तुला **खालील मजकूर direct select करून copy करता यावा** असा हवा आहे.
-
-मी code formatting वापरत नाही. **या message मधून थेट `Ctrl+A → Ctrl+C` करून GitHub README मध्ये paste कर.**
-
----
-
 <div align="center">
 
 # 🚨 CyberPehra
