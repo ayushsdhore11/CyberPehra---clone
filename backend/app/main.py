@@ -3,7 +3,15 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.database import Base, engine
 from app.models.complaint import Complaint
+from app.models.transaction import Transaction
+from app.models.alert import Alert
 from app.routers.complaints import router as complaints_router
+from app.routers.transaction import router as transaction_router
+from app.routers.prediction import router as prediction_router
+from app.routers.hotspot import router as hotspot_router
+from app.routers.withdrawal import router as withdrawal_router
+from app.routers.alerts import router as alerts_router
+
 
 
 Base.metadata.create_all(bind=engine)
@@ -29,7 +37,11 @@ app.add_middleware(
 
 
 app.include_router(complaints_router)
-
+app.include_router(transaction_router)
+app.include_router(prediction_router)
+app.include_router(hotspot_router)
+app.include_router(withdrawal_router)
+app.include_router(alerts_router)
 
 @app.get("/")
 def root():
