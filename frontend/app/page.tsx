@@ -1,527 +1,407 @@
 'use client';
 
-import React, { useState, FormEvent } from 'react';
-import { useRouter } from 'next/navigation';
-interface IconProps {
-  className?: string;
+import React from 'react';
+import Link from 'next/link';
+import {
+  RadarIcon, MapPinIcon, BrainIcon, ActivityIcon, ShieldAlertIcon,
+  ShieldCheckIcon, CrosshairIcon, LockIcon,
+} from '@/app/components/icons';
+
+/* explicit class maps — Tailwind JIT requires literal class strings */
+const TONE = {
+  cyan: {
+    icon: 'text-cyan-400',
+    iconBg: 'bg-cyan-500/10',
+    iconBorder: 'border-cyan-500/25',
+    hoverBorder: 'hover:border-cyan-500/40',
+    glow: 'bg-cyan-500/10',
+    hoverShadow: 'hover:shadow-cyan-500/25',
+    sub: 'text-cyan-300',
+    dot: 'bg-cyan-400',
+    pipelineText: 'text-cyan-300',
+    pipelineBorder: 'border-cyan-500/20',
+    pipelineHover: 'hover:border-cyan-500/40',
+  },
+  emerald: {
+    icon: 'text-emerald-400',
+    iconBg: 'bg-emerald-500/10',
+    iconBorder: 'border-emerald-500/25',
+    hoverBorder: 'hover:border-emerald-500/40',
+    glow: 'bg-emerald-500/10',
+    hoverShadow: 'hover:shadow-emerald-500/25',
+    sub: 'text-emerald-300',
+    dot: 'bg-emerald-400',
+    pipelineText: 'text-emerald-300',
+    pipelineBorder: 'border-emerald-500/20',
+    pipelineHover: 'hover:border-emerald-500/40',
+  },
+  amber: {
+    icon: 'text-amber-400',
+    iconBg: 'bg-amber-500/10',
+    iconBorder: 'border-amber-500/25',
+    hoverBorder: 'hover:border-amber-500/40',
+    glow: 'bg-amber-500/10',
+    hoverShadow: 'hover:shadow-amber-500/25',
+    sub: 'text-amber-300',
+    dot: 'bg-amber-400',
+    pipelineText: 'text-amber-300',
+    pipelineBorder: 'border-amber-500/20',
+    pipelineHover: 'hover:border-amber-500/40',
+  },
+  red: {
+    icon: 'text-red-400',
+    iconBg: 'bg-red-500/10',
+    iconBorder: 'border-red-500/25',
+    hoverBorder: 'hover:border-red-500/40',
+    glow: 'bg-red-500/10',
+    hoverShadow: 'hover:shadow-red-500/25',
+    sub: 'text-red-300',
+    dot: 'bg-red-400',
+    pipelineText: 'text-red-300',
+    pipelineBorder: 'border-red-500/20',
+    pipelineHover: 'hover:border-red-500/40',
+  },
+  slate: {
+    icon: 'text-slate-400',
+    iconBg: 'bg-slate-500/10',
+    iconBorder: 'border-slate-500/25',
+    hoverBorder: 'hover:border-slate-500/40',
+    glow: 'bg-slate-500/10',
+    hoverShadow: 'hover:shadow-slate-500/25',
+    sub: 'text-slate-300',
+    dot: 'bg-slate-400',
+    pipelineText: 'text-slate-300',
+    pipelineBorder: 'border-slate-500/20',
+    pipelineHover: 'hover:border-slate-500/40',
+  },
+  blue: {
+    icon: 'text-blue-400',
+    iconBg: 'bg-blue-500/10',
+    iconBorder: 'border-blue-500/25',
+    hoverBorder: 'hover:border-blue-500/40',
+    glow: 'bg-blue-500/10',
+    hoverShadow: 'hover:shadow-blue-500/25',
+    sub: 'text-blue-300',
+    dot: 'bg-blue-400',
+    pipelineText: 'text-blue-300',
+    pipelineBorder: 'border-blue-500/20',
+    pipelineHover: 'hover:border-blue-500/40',
+  },
+} as const;
+
+type ToneKey = keyof typeof TONE;
+
+const FEATURES: { icon: any; tone: ToneKey; title: string; sub: string; desc: string }[] = [
+  { icon: BrainIcon,       tone: 'cyan',    title: 'AI Prediction',        sub: 'Predict withdrawal risk', desc: 'Random Forest evaluation of amount, nocturnal hours, velocity, and fraud history.' },
+  { icon: MapPinIcon,      tone: 'emerald', title: 'GIS Hotspots',         sub: 'Locate high-risk zones',  desc: 'Geospatial clustering of complaints to surface probable cash-out ATM clusters.' },
+  { icon: ActivityIcon,    tone: 'amber',   title: 'Transaction Analysis', sub: 'Detect mule patterns',    desc: 'Monitors rapid money-mule hops, unusual velocities, and extraction channels.' },
+  { icon: ShieldAlertIcon, tone: 'red',     title: 'LEA Alerts',           sub: 'Enable proactive action', desc: 'Instant tactical dispatch to nearby police units and partner banking nodes.' },
+];
+
+const PIPELINE: { step: string; title: string; desc: string; tone: ToneKey }[] = [
+  { step: '01', title: 'Incident Ingestion', desc: 'Complaints logged with GPS & amounts',  tone: 'slate'   },
+  { step: '02', title: 'AI/ML Evaluation',   desc: 'Random Forest evaluates live patterns', tone: 'cyan'    },
+  { step: '03', title: 'Risk Prediction',    desc: 'Cashout probability scored 0–100',      tone: 'amber'   },
+  { step: '04', title: 'GIS Hotspot',        desc: 'Coordinate clustering detects zones',   tone: 'blue'    },
+  { step: '05', title: 'Actionable Intel',   desc: 'Recommendations formulated for LEA',    tone: 'emerald' },
+  { step: '06', title: 'LEA Alert',          desc: 'Field alert when risk exceeds 70%',     tone: 'red'     },
+];
+
+const TELEMETRY: { k: string; v: string; meta: string; tone: ToneKey; pulse?: boolean }[] = [
+  { k: 'PRIMARY REGION',      v: 'Mumbai Metro',             meta: '19.076° N · 72.877° E', tone: 'slate'   },
+  { k: 'HOTSPOT DETECTION',   v: '3 High-Risk Clusters',     meta: 'Live',                  tone: 'red',    pulse: true },
+  { k: 'ML INFERENCE ENGINE', v: 'Random Forest Classifier', meta: 'Online',                tone: 'emerald' },
+  { k: 'DISPATCH TRIGGER',    v: 'Automatic Alert',          meta: 'Risk > 70%',            tone: 'cyan'    },
+];
+
+function ArrowIcon({ className = '' }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M5 12h14" /><path d="m13 5 7 7-7 7" />
+    </svg>
+  );
 }
 
-const RadarIcon = ({ className = 'w-5 h-5' }: IconProps) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="12" r="10" /><circle cx="12" cy="12" r="6" /><circle cx="12" cy="12" r="2" />
-    <line x1="12" y1="12" x2="12" y2="2" /><line x1="12" y1="12" x2="22" y2="12" />
-  </svg>
-);
-
-const UserIcon = ({ className = 'w-5 h-5' }: IconProps) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" />
-  </svg>
-);
-
-const LockIcon = ({ className = 'w-5 h-5' }: IconProps) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" />
-  </svg>
-);
-
-const EyeIcon = ({ className = 'w-5 h-5' }: IconProps) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" />
-  </svg>
-);
-
-const EyeOffIcon = ({ className = 'w-5 h-5' }: IconProps) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" />
-    <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" />
-    <line x1="1" y1="1" x2="23" y2="23" />
-  </svg>
-);
-
-const AlertIcon = ({ className = 'w-5 h-5' }: IconProps) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
-    <line x1="12" y1="9" x2="12" y2="13" /><line x1="12" y1="17" x2="12.01" y2="17" />
-  </svg>
-);
-
-const MapPinIcon = ({ className = 'w-5 h-5' }: IconProps) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 1 1 18 0z" /><circle cx="12" cy="10" r="3" />
-  </svg>
-);
-
-const BrainIcon = ({ className = 'w-5 h-5' }: IconProps) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M12 4a4 4 0 0 1 4 4c0 1.5-.8 2.8-2 3.5.7.5 1.2 1.3 1.5 2.2a4 4 0 0 1-6.5 4.1A4 4 0 0 1 3 14c0-1.2.5-2.3 1.3-3.1C4.2 9.3 4 8.4 4 7.5a4 4 0 0 1 4-4z" />
-  </svg>
-);
-
-const ActivityIcon = ({ className = 'w-5 h-5' }: IconProps) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
-  </svg>
-);
-
-const ShieldAlertIcon = ({ className = 'w-5 h-5' }: IconProps) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" />
-  </svg>
-);
-
-const ShieldCheckIcon = ({ className = 'w-5 h-5' }: IconProps) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /><polyline points="9 12 11 14 15 10" />
-  </svg>
-);
-
-const CrosshairIcon = ({ className = 'w-5 h-5' }: IconProps) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="12" r="10" /><line x1="22" y1="12" x2="18" y2="12" /><line x1="6" y1="12" x2="2" y2="12" /><line x1="12" y1="6" x2="12" y2="2" /><line x1="12" y1="22" x2="12" y2="18" />
-  </svg>
-);
-
-type Role = 'LEA' | 'Citizen';
-type LoginStatus = 'idle' | 'loading' | 'error' | 'success';
-
-export default function CyberPehraLogin() {
-  const router = useRouter();
-
-  const [role, setRole] = useState<Role>('LEA');
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [loginStatus, setLoginStatus] = useState<LoginStatus>('idle');
-  const [errorMessage, setErrorMessage] = useState('');
-  const [formTouched, setFormTouched] = useState(false);
-
-  const handleRoleChange = (newRole: Role) => {
-    setRole(newRole);
-    setErrorMessage('');
-    setFormTouched(false);
-    setLoginStatus('idle');
-  };
-
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-
-    setFormTouched(true);
-    setErrorMessage('');
-
-    if (!username.trim() || !password.trim()) {
-      setLoginStatus('error');
-      setErrorMessage('Please enter both username and password.');
-      return;
-    }
-
-    setLoginStatus('loading');
-
-    setTimeout(() => {
-      localStorage.setItem('cyberpehra_role', role);
-      localStorage.setItem('cyberpehra_user', username.trim());
-      localStorage.setItem('cyberpehra_authenticated', 'true');
-
-      setLoginStatus('success');
-
-      router.push('/dashboard');
-    }, 1000);
-  };
-
-  const isSecurePortal = role === 'LEA';
-
+function SectionHead({ kicker, title, sub }: { kicker?: string; title: string; sub?: string }) {
   return (
-    <div className={`min-h-screen flex flex-col ${isSecurePortal ? 'cyber-grid-secure' : 'cyber-grid'} transition-colors duration-500`}>
-      {/* TOP SYSTEM TELEMETRY STRIP */}
-      <div className="border-b border-cyan-500/10 bg-slate-950/70 backdrop-blur-md px-6 py-1.5 flex items-center justify-between text-[11px] font-mono tracking-wider text-slate-400">
-        <div className="flex items-center gap-4">
-          <span className="flex items-center gap-1.5 text-cyan-400 font-semibold">
-            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping" />
-            CYBERPEHRA INTELLIGENCE GRID v2.4
+    <div className="text-center max-w-2xl mx-auto">
+      {kicker && (
+        <p className="inline-flex items-center gap-2 text-[11px] font-mono font-bold text-cyan-400 uppercase tracking-[0.25em] mb-3">
+          <span className="w-1 h-1 rounded-full bg-cyan-400" />
+          {kicker}
+        </p>
+      )}
+      <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">{title}</h2>
+      {sub && <p className="text-sm text-slate-400 mt-2 leading-relaxed">{sub}</p>}
+    </div>
+  );
+}
+
+export default function LandingPage() {
+  return (
+    <div className="min-h-screen flex flex-col cyber-grid relative overflow-hidden">
+      <div className="pointer-events-none fixed inset-0 -z-10">
+        <div className="absolute -top-1/3 left-1/2 -translate-x-1/2 w-[900px] h-[900px] rounded-full bg-cyan-500/10 blur-[140px]" />
+        <div className="absolute top-1/2 -right-40 w-[600px] h-[600px] rounded-full bg-blue-600/10 blur-[140px]" />
+        <div className="absolute -bottom-40 -left-40 w-[600px] h-[600px] rounded-full bg-indigo-600/10 blur-[140px]" />
+      </div>
+
+      <div className="border-b border-white/[0.06] bg-slate-950/70 backdrop-blur-xl px-4 sm:px-8 py-2 flex items-center justify-between text-[10.5px] font-mono tracking-[0.15em] text-slate-500">
+        <div className="flex items-center gap-3">
+          <span className="flex items-center gap-2 text-cyan-400 font-semibold">
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-cyan-400" />
+            </span>
+            INTELLIGENCE GRID ONLINE
           </span>
-          <span className="hidden sm:inline text-slate-600">|</span>
-          <span className="hidden sm:inline text-slate-400">NODE: MUMBAI-WEST-CORE</span>
+          <span className="hidden sm:inline text-slate-700">/</span>
+          <span className="hidden sm:inline">NODE · MUMBAI CYBER DIVISION</span>
         </div>
         <div className="flex items-center gap-4">
-          <span className="text-emerald-400 font-medium flex items-center gap-1">
-            <ShieldCheckIcon className="w-3.5 h-3.5" /> SECURE SHIELD ACTIVE
+          <span className="hidden md:flex items-center gap-1.5 text-emerald-400">
+            <ShieldCheckIcon className="w-3 h-3" /> SECURE LEA CHANNEL
           </span>
-          <span className="hidden md:inline text-slate-500">AES-256-GCM ENCRYPTED</span>
+          <span className="hidden lg:inline text-slate-600">v4.2</span>
         </div>
       </div>
 
-      {/* HEADER */}
-      <header className="flex items-center justify-between px-6 md:px-12 py-4 border-b border-cyan-500/15 bg-slate-950/80 backdrop-blur-md">
-        <div className="flex items-center gap-3.5">
-          <div className="relative flex items-center justify-center w-11 h-11 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-600/30 border border-cyan-400/40 shadow-lg shadow-cyan-500/20">
-            <RadarIcon className="w-6 h-6 text-cyan-400 animate-pulse-glow" />
-            <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-sm shadow-cyan-400" />
+      <header className="flex items-center justify-between px-4 sm:px-8 lg:px-16 py-4 border-b border-white/[0.06] bg-slate-950/60 backdrop-blur-xl sticky top-0 z-30">
+        <Link href="/" className="flex items-center gap-3 group">
+          <div className="relative flex items-center justify-center w-11 h-11 rounded-2xl bg-gradient-to-br from-cyan-500/20 via-cyan-500/5 to-blue-600/20 border border-cyan-400/30 shadow-lg shadow-cyan-500/10 group-hover:shadow-cyan-500/25 transition-shadow duration-500">
+            <RadarIcon className="w-5 h-5 text-cyan-400" />
+            <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_2px_rgba(34,211,238,0.6)]" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-xl font-extrabold tracking-tight text-white leading-none">
-                CyberPehra
-              </h1>
-              <span className="text-[10px] font-mono px-1.5 py-0.5 rounded border border-cyan-400/30 bg-cyan-500/10 text-cyan-300 uppercase tracking-widest font-bold">
-                SIH EDITION
+              <span className="text-lg font-extrabold tracking-tight text-white leading-none">CyberPehra</span>
+              <span className="text-[9px] font-mono px-1.5 py-0.5 rounded-md border border-cyan-400/30 bg-cyan-500/10 text-cyan-300 uppercase tracking-[0.15em] font-bold">
+                Intel
               </span>
             </div>
-            <p className="text-xs text-slate-400 tracking-wider font-mono mt-0.5">
-              Predictive Cybercrime Defense Matrix
+            <p className="text-[10.5px] text-slate-500 tracking-[0.08em] font-mono mt-1">
+              Predictive Cybercrime Defense
             </p>
           </div>
-        </div>
+        </Link>
 
-        <div className="hidden md:flex items-center gap-6 text-xs font-mono">
-          <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
-            <span className="relative flex h-2 w-2">
+        <div className="flex items-center gap-3 sm:gap-4">
+          <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/[0.08] border border-emerald-500/20 text-emerald-400 text-[11px] font-mono">
+            <span className="relative flex h-1.5 w-1.5">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500" />
             </span>
-            <span className="font-semibold">Grid Online</span>
+            <span className="font-semibold tracking-wider">SYSTEM ONLINE</span>
           </div>
-
-          <div className="flex items-center gap-2 text-slate-300">
-            <LockIcon className="w-3.5 h-3.5 text-cyan-400" />
-            <span>SSL Terminated</span>
-          </div>
-
-          <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400">
-            <ActivityIcon className="w-3.5 h-3.5" />
-            <span>AI Risk Engine Active</span>
-          </div>
+          <Link
+            href="/login"
+            className="group inline-flex items-center gap-2 text-xs sm:text-sm font-semibold px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 text-slate-950 shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 hover:scale-[1.02] transition-all duration-300"
+          >
+            <LockIcon className="w-4 h-4" />
+            <span>Officer Access</span>
+            <ArrowIcon className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+          </Link>
         </div>
       </header>
 
-      {/* MAIN CONTAINER */}
-      <main className="flex-1 flex flex-col lg:flex-row items-center justify-between gap-12 px-6 py-10 lg:px-14 lg:py-14 max-w-7xl mx-auto w-full">
-        {/* LEFT COLUMN - HERO & INTELLIGENCE RADAR */}
-        <div className="flex-1 flex flex-col justify-center space-y-9 animate-fadeInUp w-full">
-          <div className="space-y-4">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-400/30 text-cyan-400 text-xs font-mono font-semibold tracking-wider shadow-sm shadow-cyan-500/20">
-              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
-              NEXT-GEN CYBERCRIME HOTSPOT FORECASTING
-            </div>
-            
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight tracking-tight">
-              Predict <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 drop-shadow-[0_0_20px_rgba(0,229,255,0.4)]">Before</span>
-              <br />
-              It <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300 drop-shadow-[0_0_20px_rgba(56,189,248,0.4)]">Happens</span>
-            </h2>
-
-            <p className="text-base md:text-lg text-slate-300 max-w-xl leading-relaxed">
-              AI-driven intelligence computing illicit mule cash withdrawal vectors and geographic extraction clusters — equipping law enforcement with proactive interception capabilities.
-            </p>
+      <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-8 lg:px-16 py-12 lg:py-20 flex flex-col gap-16 lg:gap-24 animate-fadeIn">
+        <section className="text-center max-w-4xl mx-auto space-y-6">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-500/[0.08] border border-cyan-400/25 text-cyan-300 text-[11px] font-mono font-semibold tracking-[0.2em] shadow-lg shadow-cyan-500/10">
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-cyan-400" />
+            </span>
+            AI-DRIVEN CYBERCRIME PREDICTION PLATFORM
           </div>
 
-          {/* RADAR & THREAT SURVEILLANCE VISUAL WIDGET */}
-          <div className="card p-5 border border-cyan-500/20 bg-slate-900/60 backdrop-blur-xl relative overflow-hidden">
-            <div className="flex items-center justify-between mb-4 border-b border-white/5 pb-3">
-              <div className="flex items-center gap-2">
-                <CrosshairIcon className="w-4 h-4 text-cyan-400 animate-spin" />
-                <span className="text-xs font-mono font-bold tracking-wider text-slate-200 uppercase">
-                  Live Geospatial Hotspot Sensor
-                </span>
-              </div>
-              <span className="text-[11px] font-mono text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/30">
-                SWEEP: 360° ACTIVE
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black text-white leading-[1.05] tracking-tight">
+            Predict Where{' '}
+            <span className="relative inline-block">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-400 to-indigo-400">
+                Cybercrime Funds
               </span>
+              <span className="absolute -bottom-2 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent" />
+            </span>{' '}
+            <span className="block sm:inline">Will Move Next</span>
+          </h1>
+
+          <p className="text-base sm:text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
+            AI-powered predictive intelligence to identify high-risk cash withdrawal locations before fraudulent funds are withdrawn.
+          </p>
+
+          <div className="flex flex-wrap items-center justify-center gap-3 pt-3">
+            <Link
+              href="/login"
+              className="group inline-flex items-center gap-2 text-sm font-bold px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 text-slate-950 shadow-xl shadow-cyan-500/30 hover:shadow-cyan-500/50 hover:scale-[1.02] transition-all duration-300"
+            >
+              <LockIcon className="w-4 h-4" />
+              Enter Command Console
+              <ArrowIcon className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+            </Link>
+            <a
+              href="#pipeline"
+              className="inline-flex items-center gap-2 text-sm font-semibold px-5 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-200 hover:bg-white/[0.06] hover:border-white/20 transition-all duration-300"
+            >
+              Explore Pipeline ↓
+            </a>
+          </div>
+        </section>
+
+        <section className="relative card p-6 sm:p-8 border border-white/[0.08] bg-slate-950/60 backdrop-blur-2xl max-w-5xl mx-auto w-full shadow-2xl shadow-cyan-950/20 overflow-hidden">
+          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-500/40 to-transparent" />
+
+          <div className="flex items-center justify-between mb-6 pb-4 border-b border-white/[0.06]">
+            <div className="flex items-center gap-3">
+              <CrosshairIcon className="w-4 h-4 text-cyan-400" />
+              <h2 className="text-xs sm:text-sm font-mono font-bold tracking-[0.15em] text-slate-200 uppercase">
+                Withdrawal Hotspots · GIS Clustering
+              </h2>
             </div>
+            <span className="text-[10px] font-mono text-cyan-300 bg-cyan-500/10 px-2.5 py-1 rounded-md border border-cyan-500/25 font-semibold tracking-widest">
+              SCAN · ACTIVE
+            </span>
+          </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
-              {/* Animated Radar Circle */}
-              <div className="relative w-44 h-44 mx-auto md:mx-0 rounded-full border border-cyan-500/30 bg-slate-950/80 flex items-center justify-center overflow-hidden shadow-inner shadow-cyan-500/20">
-                {/* Concentric rings */}
-                <div className="absolute inset-3 rounded-full border border-cyan-500/20" />
-                <div className="absolute inset-7 rounded-full border border-cyan-500/20" />
-                <div className="absolute inset-12 rounded-full border border-cyan-500/20" />
-                <div className="absolute inset-16 rounded-full border border-cyan-500/30" />
-                
-                {/* Crosshairs */}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+            <div className="md:col-span-5 flex justify-center py-2">
+              <div className="relative w-44 h-44 sm:w-52 sm:h-52 rounded-full border border-cyan-500/25 bg-slate-950/90 flex items-center justify-center overflow-hidden shadow-[inset_0_0_40px_rgba(34,211,238,0.08)]">
+                {[6, 14, 22, 30].map((inset) => (
+                  <div key={inset} className="absolute rounded-full border border-cyan-500/15" style={{ inset }} />
+                ))}
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <div className="w-full h-[1px] bg-cyan-500/20" />
+                  <div className="w-full h-px bg-cyan-500/15" />
                 </div>
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <div className="h-full w-[1px] bg-cyan-500/20" />
+                  <div className="h-full w-px bg-cyan-500/15" />
                 </div>
-
-                {/* Rotating Sweep Beam */}
                 <div
                   className="absolute inset-0 origin-center animate-radar-sweep pointer-events-none"
-                  style={{
-                    background: 'conic-gradient(from 0deg, rgba(0, 229, 255, 0.4) 0deg, rgba(0, 229, 255, 0) 65deg, transparent 360deg)',
-                  }}
+                  style={{ background: 'conic-gradient(from 0deg, rgba(34,211,238,0.35) 0deg, rgba(34,211,238,0) 70deg, transparent 360deg)' }}
                 />
-
-                {/* Threat Detection Pings */}
-                <div className="absolute top-10 right-12 w-2.5 h-2.5 rounded-full bg-red-500 shadow-md shadow-red-500">
-                  <span className="absolute -inset-1 rounded-full bg-red-500 animate-ping opacity-75" />
+                <div className="absolute top-9 right-11 w-2 h-2 rounded-full bg-red-500 shadow-[0_0_10px_2px_rgba(239,68,68,0.7)]">
+                  <span className="absolute -inset-1 rounded-full bg-red-500/50 animate-ping" />
                 </div>
-                <div className="absolute bottom-11 left-10 w-2 h-2 rounded-full bg-amber-400 shadow-md shadow-amber-400">
-                  <span className="absolute -inset-1 rounded-full bg-amber-400 animate-ping opacity-60" />
+                <div className="absolute bottom-10 left-10 w-2 h-2 rounded-full bg-amber-400 shadow-[0_0_10px_2px_rgba(251,191,36,0.6)]">
+                  <span className="absolute -inset-1 rounded-full bg-amber-400/50 animate-ping" />
                 </div>
-                <div className="absolute top-16 left-12 w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-md shadow-cyan-400" />
-
-                {/* Center Node */}
-                <div className="w-2.5 h-2.5 rounded-full bg-cyan-400 z-10 border border-slate-900 shadow-sm shadow-cyan-400" />
-              </div>
-
-              {/* Live Telemetry Info */}
-              <div className="md:col-span-2 space-y-2.5 text-xs font-mono">
-                <div className="flex justify-between items-center py-1 border-b border-white/5">
-                  <span className="text-slate-400">RADAR FREQUENCY:</span>
-                  <span className="text-cyan-400 font-semibold">9.4 GHz X-BAND</span>
-                </div>
-                <div className="flex justify-between items-center py-1 border-b border-white/5">
-                  <span className="text-slate-400">DETECTED HOTSPOTS:</span>
-                  <span className="text-red-400 font-bold flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping" /> 3 HIGH-RISK VECTORS
-                  </span>
-                </div>
-                <div className="flex justify-between items-center py-1 border-b border-white/5">
-                  <span className="text-slate-400">MODEL INFERENCE:</span>
-                  <span className="text-emerald-400 font-semibold">RANDOM FOREST 96.4% ACC</span>
-                </div>
-                <div className="flex justify-between items-center py-1">
-                  <span className="text-slate-400">PRIMARY LAT/LNG:</span>
-                  <span className="text-slate-200">19.0760° N, 72.8777° E</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* FEATURE CARDS */}
-          <div className="grid grid-cols-2 gap-4 max-w-xl">
-            <div className="card card-hover card-accent-cyan p-4.5 group">
-              <div className="w-10 h-10 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
-                <BrainIcon className="w-5 h-5 text-cyan-400" />
-              </div>
-              <p className="text-sm font-bold text-white tracking-wide">AI Prediction</p>
-              <p className="text-xs text-slate-400 mt-1">Multi-factor cashout risk inference engine</p>
-            </div>
-
-            <div className="card card-hover card-accent-green p-4.5 group">
-              <div className="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
-                <MapPinIcon className="w-5 h-5 text-emerald-400" />
-              </div>
-              <p className="text-sm font-bold text-white tracking-wide">GIS Hotspots</p>
-              <p className="text-xs text-slate-400 mt-1">Geospatial density clustering & mapping</p>
-            </div>
-
-            <div className="card card-hover card-accent-amber p-4.5 group">
-              <div className="w-10 h-10 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
-                <ActivityIcon className="w-5 h-5 text-amber-400" />
-              </div>
-              <p className="text-sm font-bold text-white tracking-wide">Mule Forensics</p>
-              <p className="text-xs text-slate-400 mt-1">Velocity & withdrawal hop analysis</p>
-            </div>
-
-            <div className="card card-hover card-accent-red p-4.5 group">
-              <div className="w-10 h-10 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
-                <ShieldAlertIcon className="w-5 h-5 text-red-400" />
-              </div>
-              <p className="text-sm font-bold text-white tracking-wide">LEA Intercept</p>
-              <p className="text-xs text-slate-400 mt-1">Instant tactical dispatch alerts</p>
-            </div>
-          </div>
-
-          {/* INTELLIGENCE PIPELINE */}
-          <div>
-            <p className="text-xs font-mono font-bold text-slate-400 uppercase tracking-widest mb-3 flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
-              Autonomous Defense Pipeline
-            </p>
-            <div className="flex items-center gap-2 flex-wrap text-xs font-mono">
-              {[
-                { label: 'Incident Ingestion', color: 'text-slate-300', bg: 'bg-slate-800/80 border-slate-700' },
-                { label: 'AI/ML Evaluation', color: 'text-cyan-400', bg: 'bg-cyan-950/40 border-cyan-500/40' },
-                { label: 'Risk Vector', color: 'text-amber-400', bg: 'bg-amber-950/40 border-amber-500/40' },
-                { label: 'GIS Hotspot', color: 'text-blue-400', bg: 'bg-blue-950/40 border-blue-500/40' },
-                { label: 'Actionable Intel', color: 'text-emerald-400', bg: 'bg-emerald-950/40 border-emerald-500/40' },
-                { label: 'LEA Dispatch', color: 'text-red-400', bg: 'bg-red-950/40 border-red-500/40' },
-              ].map((item, index) => (
-                <React.Fragment key={item.label}>
-                  {index > 0 && (
-                    <span className="text-cyan-500/40 text-xs font-mono">→</span>
-                  )}
-                  <span className={`px-2.5 py-1 rounded border text-xs font-semibold ${item.color} ${item.bg}`}>
-                    {item.label}
-                  </span>
-                </React.Fragment>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* RIGHT COLUMN - AUTHENTICATION CONSOLE */}
-        <div className="w-full lg:w-[440px] flex items-center justify-center animate-slideInRight">
-          <div className={`w-full max-w-md card p-8 backdrop-blur-2xl transition-all duration-300 ${
-            isSecurePortal 
-              ? 'border-red-500/30 shadow-2xl shadow-red-950/40' 
-              : 'border-cyan-500/30 shadow-2xl shadow-cyan-950/40'
-          }`}>
-            {/* BADGE / CLASSIFICATION HEADER */}
-            <div className="flex items-center justify-between mb-5">
-              <div className={`w-12 h-12 rounded-xl flex items-center justify-center border transition-all ${
-                isSecurePortal
-                  ? 'bg-red-500/10 border-red-500/30 text-red-400 shadow-md shadow-red-500/20'
-                  : 'bg-cyan-500/10 border-cyan-500/30 text-cyan-400 shadow-md shadow-cyan-500/20'
-              }`}>
-                <LockIcon className="w-6 h-6" />
-              </div>
-              <div className="text-right">
-                <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded border uppercase tracking-widest ${
-                  isSecurePortal
-                    ? 'bg-red-500/10 border-red-500/30 text-red-400'
-                    : 'bg-cyan-500/10 border-cyan-500/30 text-cyan-400'
-                }`}>
-                  {isSecurePortal ? 'RESTRICTED ACCESS' : 'PUBLIC INTERFACE'}
-                </span>
-                <p className="text-[10px] font-mono text-slate-500 mt-1">
-                  SECURITY CLEARANCE: {isSecurePortal ? 'LEVEL-3 LEA' : 'LEVEL-1 PUBLIC'}
-                </p>
+                <div className="absolute top-14 left-14 w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_8px_2px_rgba(34,211,238,0.7)]" />
+                <div className="w-2.5 h-2.5 rounded-full bg-cyan-400 z-10 border-2 border-slate-950 shadow-[0_0_10px_2px_rgba(34,211,238,0.7)]" />
               </div>
             </div>
 
-            <h2 className="text-2xl font-extrabold text-white mb-1 tracking-tight">
-              Console Authentication
-            </h2>
-            <p className="text-xs text-slate-400 mb-6">
-              Enter credentials to initialize operational session
-            </p>
-
-            {/* PORTAL SELECTOR TABS */}
-            <div className="flex rounded-xl bg-slate-950/80 p-1 mb-6 border border-white/10">
-              {(['LEA', 'Citizen'] as Role[]).map((item) => {
-                const isSelected = role === item;
+            <div className="md:col-span-7 space-y-1 text-xs font-mono">
+              {TELEMETRY.map(({ k, v, meta, tone, pulse }) => {
+                const t = TONE[tone];
                 return (
-                  <button
-                    key={item}
-                    type="button"
-                    onClick={() => handleRoleChange(item)}
-                    className={`flex-1 py-2.5 px-3 rounded-lg text-xs font-mono font-bold transition-all flex items-center justify-center gap-2 ${
-                      isSelected
-                        ? item === 'LEA'
-                          ? 'bg-gradient-to-r from-red-600/30 to-red-500/20 text-red-300 border border-red-500/40 shadow-sm shadow-red-500/20'
-                          : 'bg-gradient-to-r from-cyan-600/30 to-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm shadow-cyan-500/20'
-                        : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
-                    }`}
-                  >
-                    <span className={`w-1.5 h-1.5 rounded-full ${
-                      isSelected ? (item === 'LEA' ? 'bg-red-400' : 'bg-cyan-400') : 'bg-slate-600'
-                    }`} />
-                    {item === 'LEA' ? 'SECURE PORTAL (LEA)' : 'WEB / PORTAL'}
-                  </button>
+                  <div key={k} className="flex items-center justify-between py-3 border-b border-white/[0.05] last:border-0 hover:bg-white/[0.02] transition-colors px-2 -mx-2 rounded-lg">
+                    <div className="flex items-center gap-2">
+                      {pulse && <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />}
+                      <span className="text-slate-500 tracking-[0.1em]">{k}</span>
+                    </div>
+                    <div className="text-right">
+                      <p className={`${t.sub} font-semibold tracking-wide`}>{v}</p>
+                      <p className="text-[10px] text-slate-600 mt-0.5">{meta}</p>
+                    </div>
+                  </div>
                 );
               })}
             </div>
+          </div>
+        </section>
 
-            {/* LOGIN FORM */}
-            <form onSubmit={handleSubmit} noValidate>
-              <div className="space-y-4">
-                {/* USERNAME */}
-                <div>
-                  <label htmlFor="username" className="label-text">
-                    {isSecurePortal ? 'Officer ID / Badge Number' : 'Citizen / Agent Email'}
-                  </label>
-                  <div className="relative">
-                    <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500">
-                      <UserIcon className="w-4 h-4" />
-                    </span>
-                    <input
-                      id="username"
-                      type="text"
-                      value={username}
-                      onChange={(e) => setUsername(e.target.value)}
-                      placeholder={isSecurePortal ? 'e.g. LEA-OFFICER-409' : 'e.g. agent@cybercell.gov'}
-                      className={`input-field pl-10 font-mono text-sm ${
-                        formTouched && !username.trim() ? 'border-red-500 focus:border-red-500' : ''
-                      }`}
-                    />
-                  </div>
-                </div>
-
-                {/* PASSWORD */}
-                <div>
-                  <label htmlFor="password" className="label-text">
-                    Access Passcode / Token
-                  </label>
-                  <div className="relative">
-                    <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500">
-                      <LockIcon className="w-4 h-4" />
-                    </span>
-                    <input
-                      id="password"
-                      type={showPassword ? 'text' : 'password'}
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      placeholder="Enter security key"
-                      className={`input-field pl-10 pr-10 font-mono text-sm ${
-                        formTouched && !password.trim() ? 'border-red-500 focus:border-red-500' : ''
-                      }`}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-cyan-400 transition-colors"
-                      title={showPassword ? 'Hide password' : 'Show password'}
-                    >
-                      {showPassword ? (
-                        <EyeOffIcon className="w-4 h-4" />
-                      ) : (
-                        <EyeIcon className="w-4 h-4" />
-                      )}
-                    </button>
-                  </div>
-                </div>
-
-                {/* ERROR NOTIFICATION */}
-                {errorMessage && (
-                  <div className="flex items-center gap-2.5 text-xs text-red-300 bg-red-950/40 border border-red-500/40 rounded-lg p-3 animate-fadeIn">
-                    <AlertIcon className="w-4 h-4 shrink-0 text-red-400" />
-                    <span>{errorMessage}</span>
-                  </div>
-                )}
-
-                {/* SUBMIT BUTTON */}
-                <button
-                  type="submit"
-                  disabled={loginStatus === 'loading'}
-                  className={`w-full h-12 mt-2 ${
-                    isSecurePortal ? 'btn-danger' : 'btn-primary'
-                  }`}
+        <section className="space-y-8">
+          <SectionHead
+            kicker="Core Capabilities"
+            title="Built for Law Enforcement"
+            sub="Engineered to preempt financial drain before funds exit the system."
+          />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {FEATURES.map(({ icon: Icon, tone, title, sub, desc }) => {
+              const t = TONE[tone];
+              return (
+                <div
+                  key={title}
+                  className={`group relative card p-6 border border-white/[0.08] ${t.hoverBorder} bg-slate-950/50 backdrop-blur-xl overflow-hidden transition-all duration-500 hover:-translate-y-1`}
                 >
-                  {loginStatus === 'loading' ? (
-                    <>
-                      <svg className="animate-spin h-5 w-5 text-current" viewBox="0 0 24 24" fill="none">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                      </svg>
-                      Verifying Clearance...
-                    </>
-                  ) : (
-                    `Authenticate to ${isSecurePortal ? 'Secure Command' : 'Web Console'}`
-                  )}
-                </button>
-              </div>
-            </form>
+                  <div className={`absolute -top-16 -right-16 w-40 h-40 rounded-full ${t.glow} blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700`} />
+                  <div className={`relative w-11 h-11 rounded-xl ${t.iconBg} border ${t.iconBorder} flex items-center justify-center mb-4 ${t.icon} group-hover:scale-110 ${t.hoverShadow} transition-all duration-500`}>
+                    <Icon className="w-5 h-5" />
+                  </div>
+                  <h3 className="relative text-sm font-bold text-white tracking-wide">{title}</h3>
+                  <p className={`relative text-[11px] ${t.sub} font-medium mt-1 tracking-wide uppercase font-mono`}>{sub}</p>
+                  <p className="relative text-xs text-slate-400 mt-3 leading-relaxed">{desc}</p>
+                </div>
+              );
+            })}
+          </div>
+        </section>
 
-            <div className="mt-6 pt-4 border-t border-white/5 text-center">
-              <p className="text-[10px] font-mono text-slate-500">
-                Authorized Law Enforcement & Registered Analysts Only
-              </p>
-              <p className="text-[9px] font-mono text-slate-600 mt-1">
-                UNAUTHORIZED ACCESS ATTEMPTS ARE LOGGED & PROSECUTED UNDER IT ACT
-              </p>
+        <section id="pipeline" className="space-y-8 pt-2 scroll-mt-24">
+          <SectionHead
+            kicker="Operational Flow"
+            title="Autonomous Defense Pipeline"
+            sub="How CyberPehra converts complaints into proactive LEA intercepts."
+          />
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+            {PIPELINE.map(({ step, title, desc, tone }, i) => {
+              const t = TONE[tone];
+              return (
+                <div
+                  key={step}
+                  className={`relative card p-4 border ${t.pipelineBorder} ${t.pipelineHover} bg-slate-950/50 backdrop-blur-xl transition-all duration-300`}
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-[10px] font-mono font-bold text-slate-600 tracking-[0.15em]">STEP {step}</span>
+                    <span className={`w-1.5 h-1.5 rounded-full ${t.dot}`} />
+                  </div>
+                  <h4 className={`text-[12px] font-bold font-mono tracking-wide ${t.pipelineText}`}>{title}</h4>
+                  <p className="text-[10.5px] text-slate-500 mt-2 leading-snug">{desc}</p>
+                  {i < PIPELINE.length - 1 && (
+                    <span className="hidden lg:block absolute top-1/2 -right-2 w-4 h-px bg-gradient-to-r from-white/20 to-transparent" />
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        <section className="relative card p-8 sm:p-12 border border-cyan-500/25 text-center overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/[0.06] via-transparent to-blue-500/[0.06]" />
+          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-500/60 to-transparent" />
+          <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full bg-cyan-500/10 blur-3xl pointer-events-none" />
+
+          <div className="relative space-y-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-400/25 text-cyan-300 text-[10px] font-mono tracking-[0.2em]">
+              <span className="w-1 h-1 rounded-full bg-cyan-400 animate-pulse" />
+              READY TO DEPLOY
+            </div>
+            <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+              Inspect the Live Predictive System
+            </h3>
+            <p className="text-sm text-slate-400 max-w-xl mx-auto leading-relaxed">
+              Access the secure Law Enforcement Command Console to run model inferences, inspect GIS clusters, and review the incident registry.
+            </p>
+            <div className="pt-3">
+              <Link
+                href="/login"
+                className="group inline-flex items-center gap-2 text-sm font-bold px-7 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 text-slate-950 shadow-xl shadow-cyan-500/30 hover:shadow-cyan-500/50 hover:scale-[1.02] transition-all duration-300"
+              >
+                <LockIcon className="w-4 h-4" />
+                Access Secure Portal
+                <ArrowIcon className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+              </Link>
             </div>
           </div>
-        </div>
+        </section>
       </main>
 
-      {/* FOOTER */}
-      <footer className="border-t border-cyan-500/10 py-4 px-6 text-center text-xs font-mono text-slate-500 bg-slate-950/80">
-        CyberPehra • Predictive Cybercrime Defense Platform • SIH Control-Room Edition • ©{' '}
-        {new Date().getFullYear()}
+      <footer className="border-t border-white/[0.06] py-4 px-6 text-center text-[11px] font-mono text-slate-600 bg-slate-950/60 backdrop-blur-xl tracking-wider">
+        <span className="text-slate-500">CyberPehra</span>
+        <span className="mx-2 text-slate-700">·</span>
+        Predictive Cybercrime Defense Platform
+        <span className="mx-2 text-slate-700">·</span>
+        © {new Date().getFullYear()}
       </footer>
     </div>
   );

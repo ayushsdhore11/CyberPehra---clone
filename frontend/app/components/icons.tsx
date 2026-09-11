@@ -30,6 +30,23 @@ export const ShieldAlertIcon = ({ className }: IconProps) => (
   </svg>
 );
 
+export const ShieldCheckIcon = ({ className }: IconProps) => (
+  <svg {...base(className)}>
+    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+    <polyline points="9 12 11 14 15 10" />
+  </svg>
+);
+
+export const CrosshairIcon = ({ className }: IconProps) => (
+  <svg {...base(className)}>
+    <circle cx="12" cy="12" r="10" />
+    <line x1="22" y1="12" x2="18" y2="12" />
+    <line x1="6" y1="12" x2="2" y2="12" />
+    <line x1="12" y1="6" x2="12" y2="2" />
+    <line x1="12" y1="22" x2="12" y2="18" />
+  </svg>
+);
+
 export const MapPinIcon = ({ className }: IconProps) => (
   <svg {...base(className)}>
     <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 1 1 18 0z" />
@@ -140,33 +157,5 @@ export const XIcon = ({ className }: IconProps) => (
   <svg {...base(className)}>
     <line x1="18" y1="6" x2="6" y2="18" />
     <line x1="6" y1="6" x2="18" y2="18" />
-  </svg>
-);
-
-export const TrendingUpIcon = ({ className }: IconProps) => (
-  <svg {...base(className)}>
-    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
-    <polyline points="17 6 23 6 23 12" />
-  </svg>
-);
-
-export const ClockIcon = ({ className }: IconProps) => (
-  <svg {...base(className)}>
-    <circle cx="12" cy="12" r="10" />
-    <polyline points="12 6 12 12 16 14" />
-  </svg>
-);
-
-export const DatabaseIcon = ({ className }: IconProps) => (
-  <svg {...base(className)}>
-    <ellipse cx="12" cy="5" rx="9" ry="3" />
-    <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
-    <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
-  </svg>
-);
-
-export const ZapIcon = ({ className }: IconProps) => (
-  <svg {...base(className)}>
-    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
   </svg>
 );
