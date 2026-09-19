@@ -34,10 +34,10 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`sticky top-0 z-50 transition-all duration-300 ${
+      className={`sticky top-0 z-50 transition-all duration-200 ${
         scrolled
-          ? "border-b border-slate-200 bg-white/95 py-3 shadow-sm backdrop-blur-md"
-          : "border-b border-slate-100 bg-white/90 py-4 backdrop-blur-sm"
+          ? "border-b border-slate-200/80 bg-white/95 py-2.5 shadow-sm backdrop-blur-md"
+          : "border-b border-slate-100 bg-white/90 py-3 backdrop-blur-sm"
       }`}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -48,29 +48,28 @@ export default function Navbar() {
             className="group flex items-center gap-2.5"
             onClick={() => setMobileOpen(false)}
           >
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-blue-900 via-indigo-700 to-cyan-500 shadow-sm transition-transform duration-300 group-hover:scale-105">
-              <ShieldCheck className="h-5 w-5 text-white" />
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-900 text-white shadow-sm transition-transform duration-200 group-hover:scale-105">
+              <ShieldCheck className="h-4.5 w-4.5" />
             </div>
 
             <div className="flex flex-col">
-              <span className="text-xl font-black tracking-tight text-slate-900">
+              <span className="text-lg font-bold tracking-tight text-slate-950 leading-tight">
                 CyberPehra
               </span>
-
-              <span className="-mt-1 text-[9px] font-semibold uppercase tracking-[0.18em] text-cyan-600">
+              <span className="text-[9px] font-semibold uppercase tracking-[0.14em] text-slate-500">
                 Intelligence System
               </span>
             </div>
           </Link>
 
-          {/* Desktop */}
+          {/* Desktop Navigation */}
           {!isLoginPage && !isDashboardPage && (
             <div className="hidden items-center gap-1 md:flex">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="rounded-lg px-3.5 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-50 hover:text-blue-900"
+                  className="rounded-lg px-3 py-1.5 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-100/80 hover:text-slate-950"
                 >
                   {link.label}
                 </Link>
@@ -80,13 +79,13 @@ export default function Navbar() {
 
           {/* Desktop Actions */}
           {!isDashboardPage && (
-            <div className="hidden items-center gap-3 md:flex">
+            <div className="hidden items-center gap-2.5 md:flex">
               <Link
                 href="/login"
-                className={`rounded-xl px-4 py-2 text-sm font-semibold transition ${
+                className={`rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${
                   isLoginPage
-                    ? "bg-blue-50 text-blue-900"
-                    : "text-slate-700 hover:bg-slate-50 hover:text-blue-900"
+                    ? "bg-slate-100 text-slate-900 font-semibold"
+                    : "text-slate-600 hover:bg-slate-100/80 hover:text-slate-950"
                 }`}
               >
                 Login
@@ -95,9 +94,9 @@ export default function Navbar() {
               {!isLoginPage && (
                 <Link
                   href="/login"
-                  className="group inline-flex items-center rounded-xl bg-gradient-to-r from-blue-900 via-indigo-800 to-blue-950 px-4 py-2 text-xs font-bold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+                  className="group inline-flex items-center rounded-lg bg-blue-900 px-3.5 py-1.5 text-xs font-semibold text-white shadow-sm transition-colors hover:bg-blue-800"
                 >
-                  Get Started
+                  Access Platform
                   <ArrowRight className="ml-1.5 h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
                 </Link>
               )}
@@ -108,13 +107,13 @@ export default function Navbar() {
           <button
             type="button"
             onClick={() => setMobileOpen((value) => !value)}
-            className="rounded-lg p-2 text-slate-700 transition hover:bg-slate-100 md:hidden"
+            className="rounded-lg p-1.5 text-slate-700 transition-colors hover:bg-slate-100 md:hidden"
             aria-label={mobileOpen ? "Close navigation" : "Open navigation"}
           >
             {mobileOpen ? (
-              <X className="h-6 w-6" />
+              <X className="h-5 w-5" />
             ) : (
-              <Menu className="h-6 w-6" />
+              <Menu className="h-5 w-5" />
             )}
           </button>
         </div>
@@ -130,7 +129,7 @@ export default function Navbar() {
             transition={{ duration: 0.2 }}
             className="border-t border-slate-200 bg-white md:hidden"
           >
-            <div className="space-y-2 px-4 pb-5 pt-3">
+            <div className="space-y-1 px-4 pb-4 pt-2">
               {!isLoginPage &&
                 !isDashboardPage &&
                 navLinks.map((link) => (
@@ -138,18 +137,18 @@ export default function Navbar() {
                     key={link.href}
                     href={link.href}
                     onClick={() => setMobileOpen(false)}
-                    className="block rounded-xl px-3.5 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:text-blue-900"
+                    className="block rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 hover:text-blue-900"
                   >
                     {link.label}
                   </Link>
                 ))}
 
               {!isDashboardPage && (
-                <div className="border-t border-slate-100 pt-3">
+                <div className="border-t border-slate-100 pt-2.5">
                   <Link
                     href="/login"
                     onClick={() => setMobileOpen(false)}
-                    className="block rounded-xl bg-blue-900 px-4 py-2.5 text-center text-sm font-bold text-white"
+                    className="block rounded-lg bg-blue-900 px-4 py-2 text-center text-sm font-semibold text-white transition hover:bg-blue-800"
                   >
                     {isLoginPage ? "Login" : "Access Platform"}
                   </Link>

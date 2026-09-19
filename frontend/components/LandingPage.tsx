@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import {
-  ArrowDown,
   ArrowRight,
   BellRing,
   BrainCircuit,
@@ -17,7 +16,6 @@ import {
   ShieldAlert,
   ShieldCheck,
   Share2,
-  Sparkles,
   Target,
   UserCheck,
 } from "lucide-react";
@@ -25,130 +23,105 @@ import type { ReactNode } from "react";
 
 export default function LandingPage() {
   return (
-    <main className="relative min-h-screen overflow-hidden bg-white">
+    <main className="relative min-h-screen bg-white">
       {/* =====================================================
-          ONE COMMON BACKGROUND FOR ENTIRE LANDING PAGE
+          SUBTLE TECHNICAL BACKGROUND
       ===================================================== */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        {/* Soft gradient blobs */}
-        <div className="absolute left-1/2 top-[-180px] h-[420px] w-[700px] -translate-x-1/2 rounded-full bg-blue-100/50 blur-3xl" />
+        {/* Soft, restrained ambient highlights */}
+        <div className="absolute left-1/2 top-[-100px] h-[320px] w-[580px] -translate-x-1/2 rounded-full bg-blue-100/40 blur-3xl" />
+        <div className="absolute right-[-100px] top-[140px] h-[260px] w-[260px] rounded-full bg-slate-100/60 blur-3xl" />
 
-        <div className="absolute right-[-180px] top-[100px] h-[350px] w-[350px] rounded-full bg-cyan-100/40 blur-3xl" />
-
-        <div className="absolute bottom-[-180px] left-[-180px] h-[350px] w-[350px] rounded-full bg-indigo-100/40 blur-3xl" />
-
-        {/* One continuous subtle grid */}
-        <div className="absolute inset-0 opacity-30 [background-image:linear-gradient(rgba(37,99,235,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(37,99,235,0.035)_1px,transparent_1px)] [background-size:44px_44px]" />
-
-        {/* Subtle dots */}
-        <div className="absolute right-[5%] top-[30%] grid grid-cols-5 gap-2 opacity-25">
-          {Array.from({ length: 25 }).map((_, i) => (
-            <span
-              key={i}
-              className="h-1 w-1 rounded-full bg-blue-300"
-            />
-          ))}
-        </div>
+        {/* Crisp, fine architectural grid */}
+        <div className="absolute inset-0 opacity-[0.03] [background-image:linear-gradient(to_right,#0f172a_1px,transparent_1px),linear-gradient(to_bottom,#0f172a_1px,transparent_1px)] [background-size:36px_36px]" />
       </div>
 
       {/* =====================================================
-          CONTENT
+          MAIN SECTIONS
       ===================================================== */}
       <div className="relative z-10">
         <Hero />
         <Features />
         <HowItWorks />
         <Security />
+        <Footer />
       </div>
     </main>
   );
 }
 
 /* =========================================================
-   HERO
+   HERO SECTION
 ========================================================= */
 
 function Hero() {
   return (
-    <section className="relative overflow-hidden">
-      <div className="relative z-10 mx-auto grid min-h-[75vh] max-w-7xl items-center gap-8 px-6 py-8 sm:px-8 lg:grid-cols-12 lg:gap-8 lg:px-8 lg:py-8">
-        {/* Left */}
-        <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="lg:col-span-7"
-        >
-          <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-3 py-1.5 text-[11px] font-bold text-blue-700">
-            <Sparkles size={13} />
-            AI-Powered Cybercrime Intelligence
-          </div>
+    <section className="relative overflow-hidden pt-8 pb-12 sm:pt-12 sm:pb-16 lg:py-16">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="grid items-center gap-8 lg:grid-cols-12 lg:gap-10">
+          {/* Left Column: Core Message & Actions */}
+          <motion.div
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="lg:col-span-7"
+          >
+            <div className="inline-flex items-center gap-2 rounded-full border border-blue-200/80 bg-blue-50/80 px-3 py-1 text-xs font-semibold text-blue-900 shadow-xs">
+              <ShieldCheck size={13} className="text-blue-700" />
+              <span>AI-Powered Cybercrime Intelligence</span>
+            </div>
 
-          <h1 className="mt-4 max-w-3xl text-4xl font-black leading-[1.04] tracking-tight text-slate-950 sm:text-5xl lg:text-[58px]">
-            Predict Cybercrime
-            <br />
-            <span className="bg-gradient-to-r from-indigo-700 via-blue-600 to-cyan-500 bg-clip-text text-transparent">
-              Before It Escalates
-            </span>
-          </h1>
+            <h1 className="mt-3.5 text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl lg:text-[46px] lg:leading-[1.12]">
+              Predict Cybercrime{" "}
+              <span className="text-blue-800">
+                Before It Escalates
+              </span>
+            </h1>
 
-          <p className="mt-4 max-w-xl text-sm leading-6 text-slate-600 sm:text-base sm:leading-7">
-            CyberPehra analyzes cybercrime complaint and transaction patterns
-            to identify potential cash-withdrawal hotspots, assess risk, and
-            generate actionable intelligence for proactive intervention.
-          </p>
+            <p className="mt-3.5 max-w-xl text-sm leading-relaxed text-slate-600 sm:text-base">
+              CyberPehra analyzes cybercrime complaint and transaction patterns
+              to identify potential cash-withdrawal hotspots, assess risk, and
+              generate actionable intelligence for proactive intervention.
+            </p>
 
-          <div className="mt-5 flex flex-wrap gap-3">
-            <Link
-              href="/login"
-              className="group inline-flex items-center rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-blue-500/20 transition hover:-translate-y-0.5"
-            >
-              Access Platform
+            <div className="mt-6 flex flex-wrap items-center gap-3">
+              <Link
+                href="/login"
+                className="group inline-flex items-center justify-center rounded-lg bg-blue-900 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-800"
+              >
+                Access Platform
+                <ArrowRight
+                  size={16}
+                  className="ml-2 transition-transform group-hover:translate-x-0.5"
+                />
+              </Link>
 
-              <ArrowRight
-                size={17}
-                className="ml-2 transition-transform group-hover:translate-x-1"
-              />
-            </Link>
+              <a
+                href="#how-it-works"
+                className="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 shadow-xs transition-colors hover:bg-slate-50 hover:text-slate-950"
+              >
+                See How It Works
+              </a>
+            </div>
 
-            <a
-              href="#how-it-works"
-              className="group inline-flex items-center rounded-xl border border-slate-200 bg-white/90 px-5 py-3 text-sm font-bold text-slate-800 shadow-sm transition hover:-translate-y-0.5 hover:bg-slate-50"
-            >
-              See How It Works
+            <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-slate-100 pt-4 text-xs font-medium text-slate-600">
+              <HeroFeature text="Predictive risk analysis" />
+              <HeroFeature text="Location intelligence" />
+              <HeroFeature text="Actionable alerts" />
+            </div>
+          </motion.div>
 
-              <ArrowDown
-                size={16}
-                className="ml-2 transition-transform group-hover:translate-y-0.5"
-              />
-            </a>
-          </div>
-
-          <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-[11px] font-medium text-slate-500">
-            <HeroFeature text="Predictive risk analysis" />
-            <HeroFeature text="Location intelligence" />
-            <HeroFeature text="Actionable alerts" />
-          </div>
-        </motion.div>
-
-        {/* Right */}
-        <motion.div
-          initial={{ opacity: 0, x: 25, scale: 0.98 }}
-          animate={{ opacity: 1, x: 0, scale: 1 }}
-          transition={{ duration: 0.7, delay: 0.1 }}
-          className="lg:col-span-5"
-        >
-          <PredictiveCard />
-        </motion.div>
+          {/* Right Column: Predictive Intelligence Preview */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="lg:col-span-5"
+          >
+            <PredictiveCard />
+          </motion.div>
+        </div>
       </div>
-
-      <motion.div
-        animate={{ y: [0, 4, 0] }}
-        transition={{ duration: 2, repeat: Infinity }}
-        className="absolute bottom-2 left-1/2 hidden -translate-x-1/2 text-slate-400 lg:block"
-      >
-        <ArrowDown size={15} />
-      </motion.div>
     </section>
   );
 }
@@ -156,79 +129,61 @@ function Hero() {
 function HeroFeature({ text }: { text: string }) {
   return (
     <span className="flex items-center gap-1.5">
-      <CheckCircle2 size={14} className="text-emerald-500" />
+      <CheckCircle2 size={14} className="text-emerald-600" />
       {text}
     </span>
   );
 }
 
 /* =========================================================
-   PREDICTIVE CARD
+   PREDICTIVE CARD (Hero Visual Preview)
 ========================================================= */
 
 function PredictiveCard() {
   return (
-    <motion.div
-      animate={{ y: [0, -4, 0] }}
-      transition={{
-        duration: 5,
-        repeat: Infinity,
-        ease: "easeInOut",
-      }}
-      className="relative mx-auto w-full max-w-[440px]"
-    >
-      <div className="absolute -inset-3 rounded-[28px] bg-gradient-to-r from-blue-200/30 via-cyan-200/30 to-indigo-200/30 blur-xl" />
-
-      <div className="relative overflow-hidden rounded-[24px] border border-blue-100 bg-white/95 shadow-[0_20px_55px_rgba(37,99,235,0.13)] backdrop-blur-xl">
-        <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
-          <div className="flex items-center gap-3">
-            <motion.div
-              animate={{ rotate: [0, 3, -3, 0] }}
-              transition={{
-                duration: 4,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-              className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-50 to-cyan-100 text-blue-600"
-            >
-              <BrainCircuit size={20} />
-            </motion.div>
+    <div className="relative mx-auto w-full max-w-[420px]">
+      <div className="relative overflow-hidden rounded-xl border border-slate-200/90 bg-white shadow-md">
+        {/* Card Header */}
+        <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/60 px-4 py-3">
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-900 text-white shadow-xs">
+              <BrainCircuit size={17} />
+            </div>
 
             <div>
-              <p className="text-[10px] font-black uppercase tracking-[0.16em] text-blue-600">
+              <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-blue-900">
                 Predictive Intelligence
               </p>
-
-              <p className="mt-0.5 text-[11px] text-slate-500">
+              <p className="text-[11px] text-slate-500">
                 Cybercrime risk analysis workflow
               </p>
             </div>
           </div>
 
-          <div className="hidden gap-1.5 sm:flex">
-            <span className="h-2 w-2 rounded-full bg-blue-400" />
-            <span className="h-2 w-2 rounded-full bg-indigo-400" />
-            <span className="h-2 w-2 rounded-full bg-violet-400" />
+          <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold text-emerald-700">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-600" />
+            Operational
           </div>
         </div>
 
-        <div className="space-y-2.5 px-4 py-4">
+        {/* Workflow Steps Preview */}
+        <div className="space-y-1.5 px-3.5 py-3.5">
           <WorkflowStep
             number="01"
-            icon={<FileWarning size={18} />}
+            icon={<FileWarning size={15} />}
             title="Cybercrime Complaints"
             description="Complaint and transaction signals"
-            color="blue"
+            badge="Signals"
           />
 
           <WorkflowConnector />
 
           <WorkflowStep
             number="02"
-            icon={<BrainCircuit size={18} />}
+            icon={<BrainCircuit size={15} />}
             title="Pattern & Transaction Analysis"
             description="Identify relevant risk signals"
-            color="cyan"
+            badge="Processing"
             active
           />
 
@@ -236,37 +191,34 @@ function PredictiveCard() {
 
           <WorkflowStep
             number="03"
-            icon={<MapPin size={18} />}
+            icon={<MapPin size={15} />}
             title="Likely Cash Withdrawal Location"
             description="Potential hotspot for verification"
-            color="indigo"
+            badge="Forecasting"
           />
 
           <WorkflowConnector />
 
           <WorkflowStep
             number="04"
-            icon={<ShieldCheck size={18} />}
+            icon={<ShieldCheck size={15} />}
             title="Actionable Intelligence"
             description="Support timely intervention"
-            color="green"
+            badge="Interdiction"
           />
         </div>
 
-        <div className="border-t border-slate-100 bg-gradient-to-r from-blue-50/70 via-white to-cyan-50/70 px-5 py-3">
-          <div className="flex items-center gap-2.5">
-            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-blue-100 text-blue-600">
-              <ShieldCheck size={15} />
-            </div>
-
-            <p className="text-[9px] font-medium leading-3.5 text-slate-500">
-              Predictive output supports authorized human decision-making and
-              verification.
+        {/* Card Footer */}
+        <div className="border-t border-slate-100 bg-slate-50/50 px-4 py-2.5">
+          <div className="flex items-center gap-2 text-slate-600">
+            <ShieldCheck size={14} className="shrink-0 text-blue-700" />
+            <p className="text-[10px] font-medium leading-normal text-slate-500">
+              Predictive output supports authorized human decision-making and verification.
             </p>
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
@@ -275,96 +227,71 @@ function WorkflowStep({
   icon,
   title,
   description,
-  color,
+  badge,
   active = false,
 }: {
   number: string;
   icon: ReactNode;
   title: string;
   description: string;
-  color: "blue" | "cyan" | "indigo" | "green";
+  badge: string;
   active?: boolean;
 }) {
-  const styles = {
-    blue: "bg-blue-50 text-blue-600",
-    cyan: "bg-cyan-50 text-cyan-600",
-    indigo: "bg-indigo-50 text-indigo-600",
-    green: "bg-emerald-50 text-emerald-600",
-  };
-
   return (
-    <motion.div
-      whileHover={{ scale: 1.01, y: -1 }}
-      transition={{ duration: 0.2 }}
-      className={`group relative flex items-center gap-3 rounded-[17px] border px-3 py-3 ${
+    <div
+      className={`group flex items-center gap-2.5 rounded-lg border px-3 py-2 transition-colors ${
         active
-          ? "border-cyan-200 bg-gradient-to-r from-cyan-50/80 via-white to-blue-50/60 shadow-[0_6px_20px_rgba(6,182,212,0.08)]"
-          : "border-slate-100 bg-white hover:border-blue-100 hover:bg-blue-50/30"
+          ? "border-blue-200 bg-blue-50/40"
+          : "border-slate-100 bg-white hover:border-slate-200 hover:bg-slate-50/50"
       }`}
     >
-      {active && (
-        <motion.div
-          animate={{ opacity: [0.2, 0.8, 0.2] }}
-          transition={{ duration: 2, repeat: Infinity }}
-          className="absolute -left-1 top-1/2 h-8 w-1 -translate-y-1/2 rounded-full bg-cyan-400"
-        />
-      )}
-
       <div
-        className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${styles[color]}`}
+        className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
+          active
+            ? "bg-blue-900 text-white"
+            : "bg-slate-100 text-slate-700 group-hover:text-blue-900"
+        }`}
       >
         {icon}
       </div>
 
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-1.5">
-          <span
-            className={`rounded-full px-1.5 py-0.5 text-[8px] font-black ${styles[color]}`}
-          >
+          <span className="text-[10px] font-bold text-slate-400">
             {number}
           </span>
-
-          <p className="truncate text-xs font-extrabold text-slate-900 sm:text-sm">
+          <p className="truncate text-xs font-bold text-slate-900">
             {title}
           </p>
         </div>
-
-        <p className="mt-0.5 text-[9px] leading-3.5 text-slate-500">
+        <p className="truncate text-[10px] text-slate-500">
           {description}
         </p>
       </div>
 
-      <ChevronRight
-        size={16}
-        className="shrink-0 text-slate-300 transition-all group-hover:translate-x-1 group-hover:text-blue-500"
-      />
-    </motion.div>
+      <span
+        className={`shrink-0 rounded px-1.5 py-0.5 text-[9px] font-semibold ${
+          active
+            ? "bg-blue-100 text-blue-800"
+            : "bg-slate-100 text-slate-600"
+        }`}
+      >
+        {badge}
+      </span>
+    </div>
   );
 }
 
 function WorkflowConnector() {
   return (
-    <div className="relative ml-[25px] h-2.5">
-      <div className="absolute left-1/2 top-0 h-full border-l border-dashed border-blue-200" />
-
-      <motion.div
-        animate={{
-          y: [0, 7, 0],
-          opacity: [0.2, 1, 0.2],
-        }}
-        transition={{
-          duration: 2,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-        className="absolute left-[calc(50%-2px)] top-0 h-1 w-1 rounded-full bg-cyan-500"
-      />
+    <div className="relative ml-[27px] h-2">
+      <div className="absolute left-0 top-0 h-full border-l border-slate-200" />
     </div>
   );
 }
 
 /* =========================================================
-   FEATURES
+   FEATURES (Core Capabilities)
 ========================================================= */
 
 const features = [
@@ -396,54 +323,46 @@ const features = [
 
 function Features() {
   return (
-    <section
-      id="features"
-      className="relative px-6 py-20 sm:px-8 lg:px-8"
-    >
-      <div className="mx-auto max-w-7xl">
+    <section id="features" className="relative py-12 sm:py-16">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <span className="rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-bold uppercase tracking-wider text-blue-900">
+          <span className="text-xs font-bold uppercase tracking-[0.14em] text-blue-800">
             Core Capabilities
           </span>
 
-          <h2 className="mt-4 text-3xl font-black tracking-tight text-slate-900 sm:text-4xl">
+          <h2 className="mt-2 text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl">
             Intelligence Built Around the Problem
           </h2>
 
-          <p className="mt-3 text-base leading-7 text-slate-600">
+          <p className="mt-2 text-sm leading-relaxed text-slate-600 sm:text-base">
             CyberPehra combines complaint intelligence, predictive analysis,
             hotspot forecasting, and actionable alerts in one platform.
           </p>
         </div>
 
-        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {features.map((feature, index) => {
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4 sm:gap-5">
+          {features.map((feature) => {
             const Icon = feature.icon;
 
             return (
-              <motion.div
+              <div
                 key={feature.title}
-                initial={{ opacity: 0, y: 18 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{
-                  duration: 0.45,
-                  delay: index * 0.08,
-                }}
-                className="group rounded-2xl border border-slate-200 bg-white/95 p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-blue-200 hover:shadow-md"
+                className="group flex flex-col justify-between rounded-xl border border-slate-200 bg-white p-5 shadow-xs transition-all duration-200 hover:border-slate-300 hover:shadow-sm"
               >
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-800 transition group-hover:bg-blue-900 group-hover:text-white">
-                  <Icon size={21} />
+                <div>
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-50 text-blue-900">
+                    <Icon size={20} />
+                  </div>
+
+                  <h3 className="mt-3.5 text-base font-bold text-slate-950">
+                    {feature.title}
+                  </h3>
+
+                  <p className="mt-1.5 text-xs leading-relaxed text-slate-600 sm:text-sm">
+                    {feature.description}
+                  </p>
                 </div>
-
-                <h3 className="mt-5 text-lg font-extrabold text-slate-900">
-                  {feature.title}
-                </h3>
-
-                <p className="mt-2 text-sm leading-6 text-slate-600">
-                  {feature.description}
-                </p>
-              </motion.div>
+              </div>
             );
           })}
         </div>
@@ -453,7 +372,7 @@ function Features() {
 }
 
 /* =========================================================
-   HOW IT WORKS
+   HOW IT WORKS (Operational Workflow)
 ========================================================= */
 
 const steps = [
@@ -462,35 +381,35 @@ const steps = [
     number: "01",
     title: "Cybercrime Complaints",
     description:
-      "Complaint and related transaction information enters the intelligence workflow.",
+      "Complaint and related transaction data enter the intelligence workflow.",
   },
   {
     icon: ShieldCheck,
     number: "02",
     title: "Pattern & Transaction Analysis",
     description:
-      "Complaint, transaction, account, and location patterns are analyzed to identify relevant signals.",
+      "Complaint, transaction, and location patterns are analyzed for risk signals.",
   },
   {
     icon: Target,
     number: "03",
     title: "Risk Prediction",
     description:
-      "The system analyzes identified patterns to estimate risk and forecast likely cash withdrawal locations.",
+      "System models patterns to estimate risk and forecast potential withdrawal points.",
   },
   {
     icon: MapPin,
     number: "04",
     title: "Hotspot Forecasting",
     description:
-      "Potential withdrawal hotspots are visualized geographically through risk intelligence.",
+      "Likely withdrawal hotspots are visualized geographically for verification.",
   },
   {
     icon: BellRing,
     number: "05",
     title: "Alerts & Intelligence",
     description:
-      "Timely alerts and intelligence support authorized agencies and financial institutions in taking appropriate action.",
+      "Structured alerts support authorized agencies and banks in taking action.",
   },
 ];
 
@@ -498,62 +417,52 @@ function HowItWorks() {
   return (
     <section
       id="how-it-works"
-      className="relative px-6 py-20 sm:px-8 lg:px-8"
+      className="relative border-y border-slate-200/70 bg-slate-50/60 py-12 sm:py-16"
     >
-      <div className="mx-auto max-w-7xl">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-700">
-            How It Works
+          <p className="text-xs font-bold uppercase tracking-[0.14em] text-blue-800">
+            Operational Workflow
           </p>
 
-          <h2 className="mt-4 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl">
-            How{" "}
-            <span className="bg-gradient-to-r from-blue-700 via-indigo-600 to-cyan-600 bg-clip-text text-transparent">
-              CyberPehra
-            </span>{" "}
-            Works
+          <h2 className="mt-2 text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl">
+            How CyberPehra Works
           </h2>
 
-          <p className="mt-5 text-base leading-7 text-slate-600 sm:text-lg">
+          <p className="mt-2 text-sm leading-relaxed text-slate-600 sm:text-base">
             CyberPehra analyzes complaint and transaction patterns to forecast
-            likely cash withdrawal hotspots and generate actionable
-            intelligence for timely response.
+            likely cash withdrawal hotspots and generate actionable intelligence for timely response.
           </p>
         </div>
 
-        <div className="relative mt-14">
-          <div className="absolute left-[10%] right-[10%] top-12 hidden h-px bg-gradient-to-r from-transparent via-blue-200 to-transparent lg:block" />
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5 sm:gap-4">
+          {steps.map((step) => {
+            const Icon = step.icon;
 
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-5">
-            {steps.map((step) => {
-              const Icon = step.icon;
-
-              return (
-                <div
-                  key={step.number}
-                  className="group relative text-center"
-                >
-                  <div className="relative mx-auto flex h-24 w-24 items-center justify-center rounded-full border border-blue-100 bg-white/95 shadow-sm transition duration-300 group-hover:-translate-y-1 group-hover:border-blue-200 group-hover:shadow-md">
-                    <div className="flex h-14 w-14 items-center justify-center rounded-full bg-blue-50 text-blue-700 transition duration-300 group-hover:bg-blue-900 group-hover:text-white">
-                      <Icon size={24} />
-                    </div>
+            return (
+              <div
+                key={step.number}
+                className="relative flex flex-col rounded-xl border border-slate-200/80 bg-white p-4 shadow-xs"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-50 text-blue-900">
+                    <Icon size={18} />
                   </div>
-
-                  <p className="mt-5 text-xs font-semibold tracking-[0.2em] text-blue-700">
+                  <span className="text-xs font-bold text-blue-800">
                     {step.number}
-                  </p>
-
-                  <h3 className="mt-2 text-base font-semibold text-slate-900">
-                    {step.title}
-                  </h3>
-
-                  <p className="mt-3 text-sm leading-6 text-slate-600">
-                    {step.description}
-                  </p>
+                  </span>
                 </div>
-              );
-            })}
-          </div>
+
+                <h3 className="mt-3 text-sm font-bold text-slate-950">
+                  {step.title}
+                </h3>
+
+                <p className="mt-1 text-xs leading-relaxed text-slate-600">
+                  {step.description}
+                </p>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
@@ -561,7 +470,7 @@ function HowItWorks() {
 }
 
 /* =========================================================
-   SECURITY
+   SECURITY & ACCESS GOVERNANCE
 ========================================================= */
 
 const securityPoints = [
@@ -575,7 +484,7 @@ const securityPoints = [
     icon: UserCheck,
     title: "Authorized Investigators",
     description:
-      "Access to alerts, intelligence reports, and supporting evidence is designed for authorized personnel.",
+      "Access to alerts, intelligence reports, and supporting evidence is restricted to authorized personnel.",
   },
   {
     icon: Share2,
@@ -593,47 +502,41 @@ const securityPoints = [
 
 function Security() {
   return (
-    <section
-      id="security"
-      className="relative px-6 py-20 sm:px-8 lg:px-8"
-    >
-      <div className="mx-auto max-w-7xl">
+    <section id="security" className="relative py-12 sm:py-16">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-700">
-            Security & Access
+          <p className="text-xs font-bold uppercase tracking-[0.14em] text-blue-800">
+            Security & Access Governance
           </p>
 
-          <h2 className="mt-4 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl">
-            Secure Intelligence for{" "}
-            <span className="bg-gradient-to-r from-blue-700 via-indigo-600 to-cyan-600 bg-clip-text text-transparent">
-              Authorized Action
-            </span>
+          <h2 className="mt-2 text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl">
+            Secure Intelligence for Authorized Action
           </h2>
 
-          <p className="mt-5 text-base leading-7 text-slate-600 sm:text-lg">
+          <p className="mt-2 text-sm leading-relaxed text-slate-600 sm:text-base">
             CyberPehra is designed to provide sensitive cybercrime intelligence
             through secure, controlled, and authorized access.
           </p>
         </div>
 
-        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4 sm:gap-5">
           {securityPoints.map((item) => {
             const Icon = item.icon;
 
             return (
               <div
                 key={item.title}
-                className="group rounded-2xl border border-slate-200 bg-white/95 p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-blue-200 hover:shadow-md"
+                className="group rounded-xl border border-slate-200 bg-white p-5 shadow-xs transition-all duration-200 hover:border-slate-300 hover:shadow-sm"
               >
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-700 transition duration-300 group-hover:bg-blue-900 group-hover:text-white">
-                  <Icon size={22} />
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-50 text-blue-900">
+                  <Icon size={20} />
                 </div>
 
-                <h3 className="mt-5 text-lg font-semibold text-slate-900">
+                <h3 className="mt-3.5 text-base font-bold text-slate-950">
                   {item.title}
                 </h3>
 
-                <p className="mt-3 text-sm leading-7 text-slate-600">
+                <p className="mt-1.5 text-xs leading-relaxed text-slate-600 sm:text-sm">
                   {item.description}
                 </p>
               </div>
@@ -641,15 +544,111 @@ function Security() {
           })}
         </div>
 
-        <div className="mx-auto mt-10 max-w-4xl rounded-2xl border border-blue-100 bg-white/95 px-6 py-4 text-center shadow-sm">
-          <div className="flex items-center justify-center gap-2 text-sm font-medium text-slate-600">
-            <ShieldCheck className="h-4 w-4 text-emerald-600" />
-
-            Sensitive intelligence is intended for authorized users and
-            supports human verification and decision-making.
+        {/* Verification advisory callout */}
+        <div className="mx-auto mt-8 max-w-3xl rounded-xl border border-blue-100 bg-blue-50/50 px-4 py-3 text-center">
+          <div className="flex items-center justify-center gap-2 text-xs font-medium text-slate-700 sm:text-sm">
+            <ShieldCheck className="h-4 w-4 shrink-0 text-emerald-600" />
+            <span>
+              Sensitive intelligence is intended for authorized users and supports human verification and decision-making.
+            </span>
           </div>
         </div>
       </div>
     </section>
+  );
+}
+
+/* =========================================================
+   FOOTER (Institutional / Security Portal)
+========================================================= */
+
+function Footer() {
+  return (
+    <footer className="border-t border-slate-200 bg-slate-50/80">
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-12 lg:gap-8">
+          {/* Platform Identity */}
+          <div className="lg:col-span-5">
+            <div className="flex items-center gap-2.5">
+              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-900 text-white">
+                <ShieldCheck className="h-4 w-4" />
+              </div>
+              <span className="text-base font-bold text-slate-950">CyberPehra</span>
+            </div>
+            <p className="mt-2 text-xs leading-relaxed text-slate-600 sm:text-sm">
+              Predictive intelligence platform for forecasting likely cash withdrawal hotspots
+              from cybercrime complaint and transaction patterns.
+            </p>
+            <p className="mt-3 text-[11px] text-slate-500">
+              Authorized access only. All activities are monitored and logged.
+            </p>
+          </div>
+
+          {/* Quick Navigation */}
+          <div className="lg:col-span-3">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-900">
+              Quick Navigation
+            </h4>
+            <ul className="mt-2.5 space-y-2 text-xs text-slate-600">
+              <li>
+                <Link href="/" className="hover:text-blue-900 transition-colors">
+                  Home
+                </Link>
+              </li>
+              <li>
+                <a href="#features" className="hover:text-blue-900 transition-colors">
+                  Core Capabilities
+                </a>
+              </li>
+              <li>
+                <a href="#how-it-works" className="hover:text-blue-900 transition-colors">
+                  How It Works
+                </a>
+              </li>
+              <li>
+                <a href="#security" className="hover:text-blue-900 transition-colors">
+                  Security & Governance
+                </a>
+              </li>
+              <li>
+                <Link href="/login" className="font-semibold text-blue-800 hover:underline">
+                  Authorized Login &rarr;
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Emergency / Reporting Portal Notice */}
+          <div className="lg:col-span-4">
+            <div className="rounded-lg border border-slate-200 bg-white p-3.5 shadow-xs">
+              <h4 className="text-xs font-bold uppercase tracking-wide text-slate-900">
+                National Cybercrime Reporting
+              </h4>
+              <p className="mt-1.5 text-xs text-slate-600">
+                If you have been a victim of cyber financial fraud, report immediately to the National Cyber Crime Helpline:
+              </p>
+              <div className="mt-2.5 flex items-center gap-2">
+                <span className="rounded bg-blue-900 px-2 py-0.5 text-xs font-bold text-white">
+                  1930
+                </span>
+                <span className="text-xs font-medium text-slate-700">
+                  or visit <span className="font-semibold text-blue-800">cybercrime.gov.in</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="mt-8 flex flex-col items-center justify-between gap-3 border-t border-slate-200/80 pt-4 text-center sm:flex-row sm:text-left">
+          <p className="text-[11px] text-slate-500">
+            &copy; {new Date().getFullYear()} CyberPehra Intelligence System. All rights reserved.
+          </p>
+          <p className="text-[11px] text-slate-500">
+            Confidential &bull; Law Enforcement & Financial Security Network
+          </p>
+        </div>
+      </div>
+    </footer>
   );
 }
