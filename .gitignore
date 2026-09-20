@@ -1,5 +1,6 @@
 # Dependencies
 node_modules/
+frontend/node_modules/
 /.pnp
 .pnp.*
 
@@ -12,15 +13,17 @@ dist/
 
 # Environment files
 .env
-.env*.local
 .env.*
+.env*.local
 !.env.example
 
 # Python
 __pycache__/
+*.pyc
 *.py[cod]
 *$py.class
 .venv/
+backend/.venv/
 env/
 venv/
 
@@ -31,8 +34,10 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
+# TypeScript
+*.tsbuildinfo
+
 # OS / Misc
 .DS_Store
 Thumbs.db
 *.pem
-

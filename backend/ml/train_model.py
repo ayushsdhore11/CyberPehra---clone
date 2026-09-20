@@ -12,6 +12,8 @@ features = [
     "transaction_amount",
     "transaction_count",
     "complaint_count",
+    "latitude",
+    "longitude",
     "location_risk",
     "withdrawal_distance",
     "withdrawal_hour",
@@ -46,6 +48,9 @@ print(f"Accuracy: {accuracy:.2f}")
 print("\nClassification Report:")
 print(classification_report(y_test, predictions))
 
-joblib.dump(model, "ml/model/random_forest_model.pkl")
+joblib.dump(
+    model,
+    "ml/model/random_forest_model.pkl"
+)
 
 print("\nModel saved successfully.")

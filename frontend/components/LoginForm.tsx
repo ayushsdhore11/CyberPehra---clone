@@ -31,12 +31,10 @@ export default function LoginForm() {
   return (
     <main className="min-h-screen bg-slate-50 p-4 sm:p-6 lg:p-8">
       <div className="mx-auto grid min-h-[640px] w-full max-w-5xl overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-2xl lg:grid-cols-12">
-        {/* LEFT PANEL */}
         <section className="relative hidden overflow-hidden bg-gradient-to-br from-blue-900 via-indigo-900 to-slate-950 p-8 text-white sm:p-10 lg:col-span-5 lg:flex lg:flex-col lg:justify-between">
           <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-cyan-500/20 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-20 -left-20 h-64 w-64 rounded-full bg-indigo-500/20 blur-3xl" />
 
-          {/* Brand */}
           <div className="relative z-10">
             <button
               type="button"
@@ -59,7 +57,6 @@ export default function LoginForm() {
             </button>
           </div>
 
-          {/* Information cards */}
           <div className="relative z-10 my-auto space-y-4 py-10">
             <div className="rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur-md">
               <div className="flex items-center gap-3">
@@ -102,17 +99,14 @@ export default function LoginForm() {
             </div>
           </div>
 
-          {/* Security */}
           <div className="relative z-10 flex items-center gap-2 border-t border-white/10 pt-4 text-[11px] text-blue-200">
             <ShieldCheck size={15} className="text-cyan-300" />
             <span>Authorized access • Secure session</span>
           </div>
         </section>
 
-        {/* RIGHT PANEL */}
         <section className="flex items-center bg-white p-8 sm:p-10 lg:col-span-7 lg:p-12">
           <div className="mx-auto w-full max-w-md">
-            {/* Mobile brand */}
             <div className="mb-6 flex items-center gap-3 lg:hidden">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-700 text-white">
                 <ShieldCheck size={21} />
@@ -129,7 +123,6 @@ export default function LoginForm() {
               </div>
             </div>
 
-            {/* Heading */}
             <div className="mb-6">
               <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-blue-800">
                 Authorized Access
@@ -144,7 +137,6 @@ export default function LoginForm() {
               </p>
             </div>
 
-            {/* Role selection */}
             <div className="mb-5">
               <p className="mb-2 text-xs font-bold text-slate-700">
                 Select Access Type
@@ -179,7 +171,6 @@ export default function LoginForm() {
               </div>
             </div>
 
-            {/* Login form */}
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label
@@ -260,7 +251,6 @@ export default function LoginForm() {
               </button>
             </form>
 
-            {/* Security */}
             <div className="mt-6 flex items-start gap-2 border-t border-slate-100 pt-4">
               <ShieldCheck
                 size={16}

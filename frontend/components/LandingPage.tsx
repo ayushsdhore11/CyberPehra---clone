@@ -7,7 +7,6 @@ import {
   BellRing,
   BrainCircuit,
   CheckCircle2,
-  ChevronRight,
   Database,
   FileWarning,
   LockKeyhole,
@@ -19,103 +18,90 @@ import {
   Target,
   UserCheck,
 } from "lucide-react";
-import type { ReactNode } from "react";
+import { type ReactNode } from "react";
 
 export default function LandingPage() {
   return (
-    <main className="relative min-h-screen bg-white">
-      {/* =====================================================
-          SUBTLE TECHNICAL BACKGROUND
-      ===================================================== */}
+    <main className="relative min-h-screen overflow-x-hidden bg-white pt-[68px] text-slate-950">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        {/* Soft, restrained ambient highlights */}
-        <div className="absolute left-1/2 top-[-100px] h-[320px] w-[580px] -translate-x-1/2 rounded-full bg-blue-100/40 blur-3xl" />
-        <div className="absolute right-[-100px] top-[140px] h-[260px] w-[260px] rounded-full bg-slate-100/60 blur-3xl" />
-
-        {/* Crisp, fine architectural grid */}
-        <div className="absolute inset-0 opacity-[0.03] [background-image:linear-gradient(to_right,#0f172a_1px,transparent_1px),linear-gradient(to_bottom,#0f172a_1px,transparent_1px)] [background-size:36px_36px]" />
+        <div className="absolute left-1/2 top-[-160px] h-[420px] w-[700px] -translate-x-1/2 rounded-full bg-blue-100/50 blur-3xl" />
+        <div className="absolute right-[-160px] top-[420px] h-[340px] w-[340px] rounded-full bg-slate-100/70 blur-3xl" />
+        <div className="absolute left-[-180px] top-[1050px] h-[320px] w-[320px] rounded-full bg-blue-50/80 blur-3xl" />
+        <div className="absolute inset-0 opacity-[0.025] [background-image:linear-gradient(to_right,#0f172a_1px,transparent_1px),linear-gradient(to_bottom,#0f172a_1px,transparent_1px)] [background-size:40px_40px]" />
       </div>
 
-      {/* =====================================================
-          MAIN SECTIONS
-      ===================================================== */}
       <div className="relative z-10">
         <Hero />
+        <TrustStrip />
         <Features />
         <HowItWorks />
         <Security />
+        <ClosingCTA />
         <Footer />
       </div>
     </main>
   );
 }
 
-/* =========================================================
-   HERO SECTION
-========================================================= */
-
 function Hero() {
   return (
-    <section className="relative overflow-hidden pt-8 pb-12 sm:pt-12 sm:pb-16 lg:py-16">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid items-center gap-8 lg:grid-cols-12 lg:gap-10">
-          {/* Left Column: Core Message & Actions */}
+    <section className="relative overflow-hidden border-b border-slate-100">
+      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-10 lg:max-w-[1360px] lg:px-8 lg:py-14 xl:max-w-[1440px] xl:py-16 2xl:max-w-[1520px]">
+        <div className="grid items-center gap-8 lg:grid-cols-12 lg:gap-8 xl:gap-10">
           <motion.div
-            initial={{ opacity: 0, y: 14 }}
+            initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.55 }}
             className="lg:col-span-7"
           >
-            <div className="inline-flex items-center gap-2 rounded-full border border-blue-200/80 bg-blue-50/80 px-3 py-1 text-xs font-semibold text-blue-900 shadow-xs">
-              <ShieldCheck size={13} className="text-blue-700" />
-              <span>AI-Powered Cybercrime Intelligence</span>
+            <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-3 py-1.5 text-[11px] font-bold uppercase tracking-wide text-blue-900">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+              AI-Powered Cybercrime Intelligence
             </div>
 
-            <h1 className="mt-3.5 text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl lg:text-[46px] lg:leading-[1.12]">
-              Predict Cybercrime{" "}
-              <span className="text-blue-800">
-                Before It Escalates
+            <h1 className="mt-3 max-w-3xl text-[30px] font-extrabold leading-[1.1] tracking-tight text-slate-950 sm:text-[38px] lg:text-[40px] xl:text-[46px] 2xl:text-[52px]">
+              Predict Likely
+              <span className="block text-blue-800">
+                Cash Withdrawal Locations
               </span>
+              <span className="block">in Advance</span>
             </h1>
 
-            <p className="mt-3.5 max-w-xl text-sm leading-relaxed text-slate-600 sm:text-base">
-              CyberPehra analyzes cybercrime complaint and transaction patterns
-              to identify potential cash-withdrawal hotspots, assess risk, and
-              generate actionable intelligence for proactive intervention.
+            <p className="mt-3 max-w-2xl text-[14px] leading-6 text-slate-600 sm:text-base sm:leading-7 xl:text-lg">
+              CyberPehra analyzes cybercrime complaints and transaction
+              patterns to forecast likely cash-withdrawal hotspots, assess
+              risk, and generate actionable intelligence for timely
+              intervention.
             </p>
 
-            <div className="mt-6 flex flex-wrap items-center gap-3">
+            <div className="mt-5 flex flex-wrap gap-3">
               <Link
                 href="/login"
-                className="group inline-flex items-center justify-center rounded-lg bg-blue-900 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-800"
+                className="group inline-flex items-center justify-center gap-2 rounded-lg bg-blue-950 px-5 py-2.5 text-sm font-bold text-white shadow-md transition-all hover:bg-blue-900 hover:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 xl:py-3"
               >
-                Access Platform
-                <ArrowRight
-                  size={16}
-                  className="ml-2 transition-transform group-hover:translate-x-0.5"
-                />
+                Access Intelligence Platform
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
 
               <a
                 href="#how-it-works"
-                className="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 shadow-xs transition-colors hover:bg-slate-50 hover:text-slate-950"
+                className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-5 py-2.5 text-sm font-bold text-slate-700 transition-all hover:border-slate-400 hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 xl:py-3"
               >
-                See How It Works
+                Explore Workflow
               </a>
             </div>
 
-            <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-slate-100 pt-4 text-xs font-medium text-slate-600">
+            <div className="mt-5 flex flex-wrap gap-x-7 gap-y-2 border-t border-slate-200 pt-4">
               <HeroFeature text="Predictive risk analysis" />
               <HeroFeature text="Location intelligence" />
               <HeroFeature text="Actionable alerts" />
             </div>
           </motion.div>
 
-          {/* Right Column: Predictive Intelligence Preview */}
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.55, delay: 0.1 }}
             className="lg:col-span-5"
           >
             <PredictiveCard />
@@ -128,62 +114,63 @@ function Hero() {
 
 function HeroFeature({ text }: { text: string }) {
   return (
-    <span className="flex items-center gap-1.5">
-      <CheckCircle2 size={14} className="text-emerald-600" />
+    <div className="flex items-center gap-2 text-xs font-semibold text-slate-600 sm:text-sm">
+      <CheckCircle2 className="h-4 w-4 text-emerald-600" />
       {text}
-    </span>
+    </div>
   );
 }
 
-/* =========================================================
-   PREDICTIVE CARD (Hero Visual Preview)
-========================================================= */
-
 function PredictiveCard() {
   return (
-    <div className="relative mx-auto w-full max-w-[420px]">
-      <div className="relative overflow-hidden rounded-xl border border-slate-200/90 bg-white shadow-md">
-        {/* Card Header */}
-        <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/60 px-4 py-3">
-          <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-900 text-white shadow-xs">
-              <BrainCircuit size={17} />
+    <div className="relative mx-auto w-full max-w-[470px] lg:ml-auto lg:mr-0">
+      <div className="absolute -inset-5 rounded-[28px] bg-blue-100/40 blur-2xl" />
+
+      <div className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl shadow-slate-200/60">
+        <div className="border-b border-slate-200 bg-slate-950 px-4 py-3 text-white xl:px-5 xl:py-3.5">
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-800 xl:h-10 xl:w-10">
+                <BrainCircuit className="h-5 w-5" />
+              </div>
+
+              <div>
+                <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-blue-200">
+                  Intelligence Engine
+                </p>
+                <p className="mt-0.5 text-xs text-slate-300">
+                  Predictive analysis workflow
+                </p>
+              </div>
             </div>
 
-            <div>
-              <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-blue-900">
-                Predictive Intelligence
-              </p>
-              <p className="text-[11px] text-slate-500">
-                Cybercrime risk analysis workflow
-              </p>
+            <div className="flex items-center gap-1.5 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-2.5 py-1 text-[10px] font-bold text-emerald-300">
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
+              </span>
+              ACTIVE
             </div>
-          </div>
-
-          <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold text-emerald-700">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-600" />
-            Operational
           </div>
         </div>
 
-        {/* Workflow Steps Preview */}
-        <div className="space-y-1.5 px-3.5 py-3.5">
+        <div className="space-y-2 p-3.5 xl:space-y-2.5 xl:p-4">
           <WorkflowStep
             number="01"
-            icon={<FileWarning size={15} />}
+            icon={<FileWarning size={16} />}
             title="Cybercrime Complaints"
             description="Complaint and transaction signals"
-            badge="Signals"
+            badge="INPUT"
           />
 
           <WorkflowConnector />
 
           <WorkflowStep
             number="02"
-            icon={<BrainCircuit size={15} />}
-            title="Pattern & Transaction Analysis"
+            icon={<BrainCircuit size={16} />}
+            title="Pattern Analysis"
             description="Identify relevant risk signals"
-            badge="Processing"
+            badge="ANALYSIS"
             active
           />
 
@@ -191,29 +178,29 @@ function PredictiveCard() {
 
           <WorkflowStep
             number="03"
-            icon={<MapPin size={15} />}
-            title="Likely Cash Withdrawal Location"
-            description="Potential hotspot for verification"
-            badge="Forecasting"
+            icon={<MapPin size={16} />}
+            title="Likely Withdrawal Location"
+            description="Forecast potential cash hotspot"
+            badge="FORECAST"
           />
 
           <WorkflowConnector />
 
           <WorkflowStep
             number="04"
-            icon={<ShieldCheck size={15} />}
+            icon={<ShieldCheck size={16} />}
             title="Actionable Intelligence"
             description="Support timely intervention"
-            badge="Interdiction"
+            badge="ACTION"
           />
         </div>
 
-        {/* Card Footer */}
-        <div className="border-t border-slate-100 bg-slate-50/50 px-4 py-2.5">
-          <div className="flex items-center gap-2 text-slate-600">
-            <ShieldCheck size={14} className="shrink-0 text-blue-700" />
-            <p className="text-[10px] font-medium leading-normal text-slate-500">
-              Predictive output supports authorized human decision-making and verification.
+        <div className="border-t border-slate-200 bg-slate-50 px-4 py-2.5 xl:px-5 xl:py-3">
+          <div className="flex gap-2.5">
+            <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-blue-800" />
+            <p className="text-[10px] leading-relaxed text-slate-500">
+              Predictive output supports authorized human verification and
+              decision-making.
             </p>
           </div>
         </div>
@@ -239,38 +226,35 @@ function WorkflowStep({
 }) {
   return (
     <div
-      className={`group flex items-center gap-2.5 rounded-lg border px-3 py-2 transition-colors ${
+      className={`flex items-center gap-3 rounded-xl border p-2.5 transition-all xl:p-3 ${
         active
-          ? "border-blue-200 bg-blue-50/40"
-          : "border-slate-100 bg-white hover:border-slate-200 hover:bg-slate-50/50"
+          ? "border-blue-200 bg-blue-50/70 shadow-sm"
+          : "border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50"
       }`}
     >
       <div
-        className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
-          active
-            ? "bg-blue-900 text-white"
-            : "bg-slate-100 text-slate-700 group-hover:text-blue-900"
+        className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg xl:h-9 xl:w-9 ${
+          active ? "bg-blue-950 text-white" : "bg-slate-100 text-slate-700"
         }`}
       >
         {icon}
       </div>
 
       <div className="min-w-0 flex-1">
-        <div className="flex items-center gap-1.5">
-          <span className="text-[10px] font-bold text-slate-400">
+        <div className="flex items-center gap-2">
+          <span className="text-[9px] font-extrabold tracking-wide text-slate-400">
             {number}
           </span>
-          <p className="truncate text-xs font-bold text-slate-900">
-            {title}
-          </p>
+          <p className="truncate text-xs font-bold text-slate-900">{title}</p>
         </div>
-        <p className="truncate text-[10px] text-slate-500">
+
+        <p className="mt-0.5 truncate text-[10px] text-slate-500">
           {description}
         </p>
       </div>
 
       <span
-        className={`shrink-0 rounded px-1.5 py-0.5 text-[9px] font-semibold ${
+        className={`shrink-0 rounded-md px-1.5 py-1 text-[8px] font-extrabold tracking-wide ${
           active
             ? "bg-blue-100 text-blue-800"
             : "bg-slate-100 text-slate-600"
@@ -284,15 +268,58 @@ function WorkflowStep({
 
 function WorkflowConnector() {
   return (
-    <div className="relative ml-[27px] h-2">
-      <div className="absolute left-0 top-0 h-full border-l border-slate-200" />
+    <div className="relative ml-[27px] h-2 xl:ml-[31px]">
+      <div className="absolute left-0 top-0 h-full border-l border-dashed border-slate-300" />
     </div>
   );
 }
 
-/* =========================================================
-   FEATURES (Core Capabilities)
-========================================================= */
+function TrustStrip() {
+  return (
+    <section className="border-b border-slate-200 bg-slate-50/70">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 divide-y divide-slate-200 px-4 sm:grid-cols-3 sm:divide-x sm:divide-y-0 sm:px-6 lg:max-w-[1360px] lg:px-8 xl:max-w-[1440px] 2xl:max-w-[1520px]">
+        <TrustItem
+          icon={<ShieldCheck />}
+          title="Secure Intelligence"
+          description="Controlled access for authorized users"
+        />
+        <TrustItem
+          icon={<Target />}
+          title="Predictive Analysis"
+          description="Risk-based location forecasting"
+        />
+        <TrustItem
+          icon={<MapPinned />}
+          title="GIS Visualization"
+          description="Geographic hotspot intelligence"
+        />
+      </div>
+    </section>
+  );
+}
+
+function TrustItem({
+  icon,
+  title,
+  description,
+}: {
+  icon: ReactNode;
+  title: string;
+  description: string;
+}) {
+  return (
+    <div className="flex items-center gap-3 px-2 py-4 sm:px-6 xl:py-5">
+      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white text-blue-900 shadow-sm ring-1 ring-slate-200">
+        {icon}
+      </div>
+
+      <div>
+        <p className="text-xs font-bold text-slate-900">{title}</p>
+        <p className="mt-0.5 text-[11px] text-slate-500">{description}</p>
+      </div>
+    </div>
+  );
+}
 
 const features = [
   {
@@ -300,69 +327,73 @@ const features = [
     description:
       "Organize cybercrime complaint information and identify relevant patterns for further analysis.",
     icon: BrainCircuit,
+    metric: "Structured intake",
   },
   {
     title: "Predictive Risk Analysis",
     description:
       "Analyze complaint and transaction patterns to assess potential location-based risk.",
     icon: ShieldAlert,
+    metric: "0–100 risk score",
   },
   {
     title: "Withdrawal Hotspot Forecasting",
     description:
       "Identify potential cash-withdrawal locations that may require verification and monitoring.",
     icon: MapPinned,
+    metric: "GIS heatmap",
   },
   {
     title: "Actionable Intelligence & Alerts",
     description:
       "Convert predictive results into structured intelligence and alerts for authorized users.",
     icon: BellRing,
+    metric: "Real-time alerts",
   },
 ];
 
 function Features() {
   return (
-    <section id="features" className="relative py-12 sm:py-16">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl text-center">
-          <span className="text-xs font-bold uppercase tracking-[0.14em] text-blue-800">
-            Core Capabilities
-          </span>
+    <section
+      id="features"
+      className="relative scroll-mt-[88px] py-12 sm:py-16 lg:py-20"
+    >
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:max-w-[1360px] lg:px-8 xl:max-w-[1440px] 2xl:max-w-[1520px]">
+        <SectionHeading
+          eyebrow="Core Capabilities"
+          title="Intelligence Built Around the Problem"
+          description="CyberPehra combines complaint intelligence, predictive analysis, hotspot forecasting, and actionable alerts in one operational workflow."
+        />
 
-          <h2 className="mt-2 text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl">
-            Intelligence Built Around the Problem
-          </h2>
-
-          <p className="mt-2 text-sm leading-relaxed text-slate-600 sm:text-base">
-            CyberPehra combines complaint intelligence, predictive analysis,
-            hotspot forecasting, and actionable alerts in one platform.
-          </p>
-        </div>
-
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4 sm:gap-5">
-          {features.map((feature) => {
+        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {features.map((feature, index) => {
             const Icon = feature.icon;
 
             return (
-              <div
+              <motion.div
                 key={feature.title}
-                className="group flex flex-col justify-between rounded-xl border border-slate-200 bg-white p-5 shadow-xs transition-all duration-200 hover:border-slate-300 hover:shadow-sm"
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.4, delay: index * 0.05 }}
+                className="group flex flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-md"
               >
-                <div>
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-50 text-blue-900">
-                    <Icon size={20} />
-                  </div>
-
-                  <h3 className="mt-3.5 text-base font-bold text-slate-950">
-                    {feature.title}
-                  </h3>
-
-                  <p className="mt-1.5 text-xs leading-relaxed text-slate-600 sm:text-sm">
-                    {feature.description}
-                  </p>
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-900 transition-colors group-hover:bg-blue-950 group-hover:text-white">
+                  <Icon className="h-5 w-5" />
                 </div>
-              </div>
+
+                <h3 className="mt-4 text-base font-bold text-slate-950">
+                  {feature.title}
+                </h3>
+
+                <p className="mt-2 flex-1 text-sm leading-6 text-slate-600">
+                  {feature.description}
+                </p>
+
+                <div className="mt-4 inline-flex w-fit items-center gap-1.5 rounded-md bg-slate-100 px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-slate-700">
+                  {feature.metric}
+                </div>
+              </motion.div>
             );
           })}
         </div>
@@ -370,10 +401,6 @@ function Features() {
     </section>
   );
 }
-
-/* =========================================================
-   HOW IT WORKS (Operational Workflow)
-========================================================= */
 
 const steps = [
   {
@@ -386,7 +413,7 @@ const steps = [
   {
     icon: ShieldCheck,
     number: "02",
-    title: "Pattern & Transaction Analysis",
+    title: "Pattern Analysis",
     description:
       "Complaint, transaction, and location patterns are analyzed for risk signals.",
   },
@@ -395,7 +422,7 @@ const steps = [
     number: "03",
     title: "Risk Prediction",
     description:
-      "System models patterns to estimate risk and forecast potential withdrawal points.",
+      "The model estimates risk and forecasts potential withdrawal points.",
   },
   {
     icon: MapPin,
@@ -409,7 +436,7 @@ const steps = [
     number: "05",
     title: "Alerts & Intelligence",
     description:
-      "Structured alerts support authorized agencies and banks in taking action.",
+      "Structured alerts support authorized agencies and financial institutions.",
   },
 ];
 
@@ -417,61 +444,83 @@ function HowItWorks() {
   return (
     <section
       id="how-it-works"
-      className="relative border-y border-slate-200/70 bg-slate-50/60 py-12 sm:py-16"
+      className="scroll-mt-[88px] border-y border-slate-200 bg-slate-50 py-12 sm:py-16 lg:py-20"
     >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-3xl text-center">
-          <p className="text-xs font-bold uppercase tracking-[0.14em] text-blue-800">
-            Operational Workflow
-          </p>
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:max-w-[1360px] lg:px-8 xl:max-w-[1440px] 2xl:max-w-[1520px]">
+        <SectionHeading
+          eyebrow="Operational Workflow"
+          title="How CyberPehra Works"
+          description="From cybercrime complaints to predictive location intelligence and actionable alerts."
+        />
 
-          <h2 className="mt-2 text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl">
-            How CyberPehra Works
-          </h2>
+        <div className="relative mt-12">
+          <div className="absolute left-[10%] right-[10%] top-12 hidden border-t border-dashed border-slate-300 lg:block" />
 
-          <p className="mt-2 text-sm leading-relaxed text-slate-600 sm:text-base">
-            CyberPehra analyzes complaint and transaction patterns to forecast
-            likely cash withdrawal hotspots and generate actionable intelligence for timely response.
-          </p>
-        </div>
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
+            {steps.map((step, index) => {
+              const Icon = step.icon;
 
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5 sm:gap-4">
-          {steps.map((step) => {
-            const Icon = step.icon;
+              return (
+                <motion.div
+                  key={step.number}
+                  initial={{ opacity: 0, y: 14 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{ duration: 0.4, delay: index * 0.06 }}
+                  className="relative rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
+                >
+                  <div className="relative z-10 flex items-center justify-between">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-950 text-white shadow-sm ring-4 ring-slate-50">
+                      <Icon className="h-5 w-5" />
+                    </div>
 
-            return (
-              <div
-                key={step.number}
-                className="relative flex flex-col rounded-xl border border-slate-200/80 bg-white p-4 shadow-xs"
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-50 text-blue-900">
-                    <Icon size={18} />
+                    <span className="text-xs font-extrabold tracking-wide text-blue-800">
+                      {step.number}
+                    </span>
                   </div>
-                  <span className="text-xs font-bold text-blue-800">
-                    {step.number}
-                  </span>
-                </div>
 
-                <h3 className="mt-3 text-sm font-bold text-slate-950">
-                  {step.title}
-                </h3>
+                  <h3 className="mt-5 text-sm font-bold text-slate-950">
+                    {step.title}
+                  </h3>
 
-                <p className="mt-1 text-xs leading-relaxed text-slate-600">
-                  {step.description}
-                </p>
-              </div>
-            );
-          })}
+                  <p className="mt-2 text-xs leading-5 text-slate-600">
+                    {step.description}
+                  </p>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>
   );
 }
 
-/* =========================================================
-   SECURITY & ACCESS GOVERNANCE
-========================================================= */
+function SectionHeading({
+  eyebrow,
+  title,
+  description,
+}: {
+  eyebrow: string;
+  title: string;
+  description: string;
+}) {
+  return (
+    <div className="mx-auto max-w-3xl text-center">
+      <p className="text-[11px] font-extrabold uppercase tracking-[0.18em] text-blue-800">
+        {eyebrow}
+      </p>
+
+      <h2 className="mt-2.5 text-2xl font-extrabold tracking-tight text-slate-950 sm:text-3xl lg:text-4xl">
+        {title}
+      </h2>
+
+      <p className="mt-3 text-sm leading-6 text-slate-600 sm:text-base">
+        {description}
+      </p>
+    </div>
+  );
+}
 
 const securityPoints = [
   {
@@ -479,6 +528,7 @@ const securityPoints = [
     title: "Secure Access",
     description:
       "Investigative intelligence is provided through a secure interface for authorized users.",
+    featured: true,
   },
   {
     icon: UserCheck,
@@ -490,7 +540,7 @@ const securityPoints = [
     icon: Share2,
     title: "Controlled Intelligence Sharing",
     description:
-      "Relevant alerts and intelligence can be shared with authorized law enforcement agencies and financial institutions.",
+      "Relevant intelligence can be shared with authorized law enforcement agencies and financial institutions.",
   },
   {
     icon: ShieldCheck,
@@ -502,41 +552,46 @@ const securityPoints = [
 
 function Security() {
   return (
-    <section id="security" className="relative py-12 sm:py-16">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-3xl text-center">
-          <p className="text-xs font-bold uppercase tracking-[0.14em] text-blue-800">
-            Security & Access Governance
-          </p>
+    <section
+      id="security"
+      className="relative scroll-mt-[88px] py-12 sm:py-16 lg:py-20"
+    >
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:max-w-[1360px] lg:px-8 xl:max-w-[1440px] 2xl:max-w-[1520px]">
+        <SectionHeading
+          eyebrow="Security & Access Governance"
+          title="Secure Intelligence for Authorized Action"
+          description="CyberPehra is designed to provide sensitive cybercrime intelligence through secure, controlled, and authorized access."
+        />
 
-          <h2 className="mt-2 text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl">
-            Secure Intelligence for Authorized Action
-          </h2>
-
-          <p className="mt-2 text-sm leading-relaxed text-slate-600 sm:text-base">
-            CyberPehra is designed to provide sensitive cybercrime intelligence
-            through secure, controlled, and authorized access.
-          </p>
-        </div>
-
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4 sm:gap-5">
+        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {securityPoints.map((item) => {
             const Icon = item.icon;
+            const featured = item.featured;
 
             return (
               <div
                 key={item.title}
-                className="group rounded-xl border border-slate-200 bg-white p-5 shadow-xs transition-all duration-200 hover:border-slate-300 hover:shadow-sm"
+                className={`rounded-2xl border p-5 shadow-sm transition-all hover:shadow-md ${
+                  featured
+                    ? "border-blue-200 bg-blue-50/40"
+                    : "border-slate-200 bg-white hover:border-slate-300"
+                }`}
               >
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-50 text-blue-900">
-                  <Icon size={20} />
+                <div
+                  className={`flex h-11 w-11 items-center justify-center rounded-xl ${
+                    featured
+                      ? "bg-blue-950 text-white"
+                      : "bg-blue-50 text-blue-900"
+                  }`}
+                >
+                  <Icon className="h-5 w-5" />
                 </div>
 
-                <h3 className="mt-3.5 text-base font-bold text-slate-950">
+                <h3 className="mt-4 text-base font-bold text-slate-950">
                   {item.title}
                 </h3>
 
-                <p className="mt-1.5 text-xs leading-relaxed text-slate-600 sm:text-sm">
+                <p className="mt-2 text-sm leading-6 text-slate-600">
                   {item.description}
                 </p>
               </div>
@@ -544,109 +599,166 @@ function Security() {
           })}
         </div>
 
-        {/* Verification advisory callout */}
-        <div className="mx-auto mt-8 max-w-3xl rounded-xl border border-blue-100 bg-blue-50/50 px-4 py-3 text-center">
-          <div className="flex items-center justify-center gap-2 text-xs font-medium text-slate-700 sm:text-sm">
-            <ShieldCheck className="h-4 w-4 shrink-0 text-emerald-600" />
-            <span>
-              Sensitive intelligence is intended for authorized users and supports human verification and decision-making.
-            </span>
-          </div>
+        <div className="mx-auto mt-10 flex max-w-3xl items-start gap-3 rounded-2xl border border-blue-100 bg-blue-50/60 p-4">
+          <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-emerald-600" />
+
+          <p className="text-xs leading-5 text-slate-700 sm:text-sm">
+            Sensitive intelligence is intended for authorized users and
+            supports human verification and decision-making.
+          </p>
         </div>
       </div>
     </section>
   );
 }
 
-/* =========================================================
-   FOOTER (Institutional / Security Portal)
-========================================================= */
+function ClosingCTA() {
+  return (
+    <section className="border-t border-slate-200 bg-slate-50 py-12 sm:py-16">
+      <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+        <p className="text-[11px] font-extrabold uppercase tracking-[0.18em] text-blue-800">
+          Get Started
+        </p>
+
+        <h2 className="mt-2.5 text-2xl font-extrabold tracking-tight text-slate-950 sm:text-3xl lg:text-4xl">
+          Ready to predict the next hotspot?
+        </h2>
+
+        <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-slate-600 sm:text-base">
+          Access the intelligence console with authorized credentials, or
+          request a walkthrough for your agency or institution.
+        </p>
+
+        <div className="mt-7 flex flex-wrap justify-center gap-3">
+          <Link
+            href="/login"
+            className="group inline-flex items-center justify-center gap-2 rounded-lg bg-blue-950 px-5 py-3 text-sm font-bold text-white shadow-md transition-all hover:bg-blue-900 hover:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+          >
+            Authorized Login
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+          </Link>
+
+          <a
+            href="#how-it-works"
+            className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-5 py-3 text-sm font-bold text-slate-700 transition-all hover:border-slate-400 hover:bg-slate-100"
+          >
+            Review Workflow
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
 
 function Footer() {
   return (
-    <footer className="border-t border-slate-200 bg-slate-50/80">
-      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-12 lg:gap-8">
-          {/* Platform Identity */}
+    <footer className="border-t border-slate-200 bg-slate-950 text-slate-300">
+      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:max-w-[1360px] lg:px-8 xl:max-w-[1440px] 2xl:max-w-[1520px]">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-12">
           <div className="lg:col-span-5">
             <div className="flex items-center gap-2.5">
-              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-900 text-white">
-                <ShieldCheck className="h-4 w-4" />
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-800 text-white">
+                <ShieldCheck className="h-5 w-5" />
               </div>
-              <span className="text-base font-bold text-slate-950">CyberPehra</span>
+
+              <div>
+                <p className="font-bold text-white">CyberPehra</p>
+                <p className="text-[9px] uppercase tracking-[0.15em] text-slate-500">
+                  Predictive Cybercrime Intelligence
+                </p>
+              </div>
             </div>
-            <p className="mt-2 text-xs leading-relaxed text-slate-600 sm:text-sm">
-              Predictive intelligence platform for forecasting likely cash withdrawal hotspots
-              from cybercrime complaint and transaction patterns.
+
+            <p className="mt-4 max-w-md text-sm leading-6 text-slate-400">
+              Predictive intelligence platform for forecasting likely cash
+              withdrawal hotspots from cybercrime complaint and transaction
+              patterns.
             </p>
-            <p className="mt-3 text-[11px] text-slate-500">
-              Authorized access only. All activities are monitored and logged.
-            </p>
+
+            <div className="mt-4 flex items-center gap-2 text-[11px] text-slate-500">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+              </span>
+              System Operational
+            </div>
           </div>
 
-          {/* Quick Navigation */}
           <div className="lg:col-span-3">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-900">
-              Quick Navigation
+            <h4 className="text-xs font-bold uppercase tracking-wider text-white">
+              Platform
             </h4>
-            <ul className="mt-2.5 space-y-2 text-xs text-slate-600">
+
+            <ul className="mt-4 space-y-3 text-sm">
               <li>
-                <Link href="/" className="hover:text-blue-900 transition-colors">
-                  Home
-                </Link>
-              </li>
-              <li>
-                <a href="#features" className="hover:text-blue-900 transition-colors">
+                <a
+                  href="#features"
+                  className="transition-colors hover:text-white"
+                >
                   Core Capabilities
                 </a>
               </li>
+
               <li>
-                <a href="#how-it-works" className="hover:text-blue-900 transition-colors">
+                <a
+                  href="#how-it-works"
+                  className="transition-colors hover:text-white"
+                >
                   How It Works
                 </a>
               </li>
+
               <li>
-                <a href="#security" className="hover:text-blue-900 transition-colors">
+                <a
+                  href="#security"
+                  className="transition-colors hover:text-white"
+                >
                   Security & Governance
                 </a>
               </li>
+
               <li>
-                <Link href="/login" className="font-semibold text-blue-800 hover:underline">
-                  Authorized Login &rarr;
+                <Link
+                  href="/login"
+                  className="font-semibold text-blue-300 transition-colors hover:text-white"
+                >
+                  Authorized Login →
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Emergency / Reporting Portal Notice */}
           <div className="lg:col-span-4">
-            <div className="rounded-lg border border-slate-200 bg-white p-3.5 shadow-xs">
-              <h4 className="text-xs font-bold uppercase tracking-wide text-slate-900">
+            <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-white">
                 National Cybercrime Reporting
               </h4>
-              <p className="mt-1.5 text-xs text-slate-600">
-                If you have been a victim of cyber financial fraud, report immediately to the National Cyber Crime Helpline:
+
+              <p className="mt-2 text-sm leading-6 text-slate-400">
+                If you are a victim of cyber financial fraud, report
+                immediately through the National Cyber Crime Helpline.
               </p>
-              <div className="mt-2.5 flex items-center gap-2">
-                <span className="rounded bg-blue-900 px-2 py-0.5 text-xs font-bold text-white">
+
+              <div className="mt-4 flex items-center gap-3">
+                <span className="rounded-lg bg-blue-800 px-3 py-1.5 text-sm font-extrabold text-white">
                   1930
                 </span>
-                <span className="text-xs font-medium text-slate-700">
-                  or visit <span className="font-semibold text-blue-800">cybercrime.gov.in</span>
+
+                <span className="text-xs text-slate-400">
+                  National Cyber Crime Helpline
                 </span>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="mt-8 flex flex-col items-center justify-between gap-3 border-t border-slate-200/80 pt-4 text-center sm:flex-row sm:text-left">
-          <p className="text-[11px] text-slate-500">
-            &copy; {new Date().getFullYear()} CyberPehra Intelligence System. All rights reserved.
+        <div className="mt-10 flex flex-col gap-2 border-t border-slate-800 pt-5 text-[11px] text-slate-500 sm:flex-row sm:items-center sm:justify-between">
+          <p>
+            © {new Date().getFullYear()} CyberPehra Intelligence System. All
+            rights reserved.
           </p>
-          <p className="text-[11px] text-slate-500">
-            Confidential &bull; Law Enforcement & Financial Security Network
-          </p>
+
+          <p>Confidential • Law Enforcement & Financial Security Network</p>
         </div>
       </div>
     </footer>
